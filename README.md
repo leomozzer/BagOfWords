@@ -26,6 +26,7 @@ It was used this translator because of the pricing limits
 ![Image](docs/Azure/translator_endpoint.jpg)
 
 ## Install
+Rename the file `serverless-copy.yml`to `serverless.yml`
 ```
 # Install dependencies
 npm i

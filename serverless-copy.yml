@@ -8,7 +8,7 @@ provider:
   environment:
     DICTIONARY_API: https://api.dictionaryapi.dev/api/v2/entries
     #Microsoft
-    MICROSOFT_API_COGNITIVE_ENDPOINT: ""
+    MICROSOFT_API_COGNITIVE_ENDPOINT:  
     MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY: ""
     MICROSOFT_TRANSLATOR_LOCATION: ""
 

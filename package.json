@@ -1,0 +1,29 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "del node_modules && npm install --platform=linux --arch=x64",
+    "deploy": "serverless deploy -v",
+    "postdeploy": "del node_modules && npm install",
+    "offline": "serverless offline start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^8.0.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "random-words": "^1.1.1",
+    "serverless-http": "^2.7.0",
+    "translate": "^1.2.3",
+    "uuid": "^8.3.2"
+  }
+}

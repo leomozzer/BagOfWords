@@ -1,0 +1,23 @@
+service: bagofwords
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  environment:
+    DICTIONARY_API: https://api.dictionaryapi.dev/api/v2/entries
+    #Microsoft
+    MICROSOFT_API_COGNITIVE_ENDPOINT: ""
+    MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY: ""
+    MICROSOFT_TRANSLATOR_LOCATION: ""
+
+functions:
+  app:
+    handler: src/index.handler
+    events:
+      - http:
+          path: /{any+}
+          method: ANY
+plugins:
+  - serverless-offline

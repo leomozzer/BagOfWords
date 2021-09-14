@@ -55,7 +55,7 @@ module.exports = {
     async GetWordsSlackTemplate(req, res) {
         try {
             const { language } = req.params
-            const words = language ? await HandleTranslatedWords(GenerateRandomWords(3), "en", [language]) : await HandleWords(GenerateRandomWords(3))
+            const words = language && language !== "en" ? await HandleTranslatedWords(GenerateRandomWords(3), "en", [language]) : await HandleWords(GenerateRandomWords(3))
             const slackTemplate = SlackTemplate(words);
             return res.json({
                 'blocks': slackTemplate

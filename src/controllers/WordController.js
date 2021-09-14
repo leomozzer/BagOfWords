@@ -40,6 +40,7 @@ const HandleTranslatedWords = async (words, language = "en", output_language) =>
 
 module.exports = {
     async GetWords(req, res) {
+        console.log('Ola')
         try {
             const words = await HandleWords(GenerateRandomWords(3))
             return res.json({
@@ -47,6 +48,7 @@ module.exports = {
             });
         }
         catch (err) {
+            console.log(err)
             return res.json({
                 'response': err
             });

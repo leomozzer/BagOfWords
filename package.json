@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/tests/local.js",
+    "test": "jest",
+    "dev": "nodemon src/tests/local.js --ignore __tests__",
     "predeploy": "del node_modules && npm install --platform=linux --arch=x64",
     "deploy": "serverless deploy -v",
     "postdeploy": "del node_modules && npm install",
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^27.2.0",
     "nodemon": "^2.0.12",
     "serverless-offline": "^8.0.0"
   },

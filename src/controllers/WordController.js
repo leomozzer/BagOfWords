@@ -14,7 +14,7 @@ module.exports = {
         catch (err) {
             console.log(err)
             return res.json({
-                'response': err
+                'error': err
             });
         }
     },
@@ -30,14 +30,14 @@ module.exports = {
         catch (err) {
             console.log(err)
             return res.json({
-                'response': err
+                'error': err
             });
         }
     },
     async RandomWordsLanguage(req, res) {
         const { language } = req.params;
         try {
-            const TranslatedWords = await HandleTranslatedWords(GenerateRandomWords(3), "en", [language]);
+            const TranslatedWords = language !== "en" ? await HandleTranslatedWords(GenerateRandomWords(3), "en", [language]) : await HandleWords(GenerateRandomWords(3));
             return res.json({
                 'words': TranslatedWords
             });
@@ -45,7 +45,7 @@ module.exports = {
         catch (err) {
             console.log(err)
             return res.json({
-                'response': err
+                'error': err
             });
         }
     }

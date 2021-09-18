@@ -4,7 +4,7 @@ jspm_packages
 package-lock.json
 yarn.lock
 serverless.yml
-.env
 
 # Serverless directories
 .serverless
+.env

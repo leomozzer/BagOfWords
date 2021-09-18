@@ -1,4 +1,3 @@
-const serverless = require('serverless-http');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -13,4 +12,4 @@ app.use((req, res, next) => {
 })
 app.use(require('./routes'))
 
-module.exports.handler = serverless(app);
+module.exports = app

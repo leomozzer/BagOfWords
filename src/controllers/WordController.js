@@ -4,7 +4,6 @@ const { GenerateRandomWords } = require("../models/Words")
 
 module.exports = {
     async GetWords(req, res) {
-        console.log('Ola')
         try {
             const words = await HandleWords(GenerateRandomWords(3))
             return res.json({

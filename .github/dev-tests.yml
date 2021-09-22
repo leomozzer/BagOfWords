@@ -1,0 +1,41 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     working-directory: backend
+    # env:
+    #   MONGO_USER: editor
+    #   MONGO_PWD: passord
+    #   MONGO_DB: db-connector
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Install DEV dependencies
+      run: npm install -D
+      
+    - name: perform tests
+      run: npm run test
+        

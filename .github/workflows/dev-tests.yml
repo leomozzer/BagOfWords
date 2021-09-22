@@ -35,9 +35,7 @@ jobs:
       
     - name: Install DEV dependencies
       run: npm install -D
-    
-    - name: Run Jest
-      uses: stefanoeb/jest-action@1.0.3
-    # - name: perform tests
-    #   run: npm run test
+      
+    - name: perform tests
+      run: npm run test
         

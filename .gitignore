@@ -9,3 +9,4 @@ serverless.yml
 .serverless
 .env
 src/data
+coverage

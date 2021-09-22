@@ -36,6 +36,11 @@ jobs:
     - name: Install DEV dependencies
       run: npm install -D
       
+    - name: Remove File
+      uses: JesseTG/rm@v1.0.2
+      with:
+        path: ${{GITHUB_WORKSPACE}}/__tests__/unit
+      
     - name: perform tests
       run: npm run test
         

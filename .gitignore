@@ -8,3 +8,4 @@ serverless.yml
 # Serverless directories
 .serverless
 .env
+src/data

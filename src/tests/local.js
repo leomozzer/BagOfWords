@@ -1,5 +1,5 @@
 const app = require('../app');
-
-app.listen(3000, () => {
+require('dotenv').config()
+app.listen(process.env.PORT, () => {
     console.log(`App running on port ${process.env.PORT}`)
 })

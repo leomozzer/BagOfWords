@@ -8,7 +8,7 @@ module.exports = {
             return getWord['data']
         }
         catch (error) {
-            throw error['response']['data']
+            throw error
         }
     }
 }

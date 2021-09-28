@@ -1,19 +1,25 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-describe('Words Routes', () => {
-    test("Word", () => {
-        const responseObject = {}
-        const response = {
-            json: jest.fn().mockImplementation((result) => {
-                console.log(result)
-                responseObject = result
-            })
+let testApp;
+
+const makeGetRequest = path => new Promise((resolve, reject) => {
+    testApp.get(path).end((err, res) => {
+        if (err) {
+            return reject(err);
         }
+
+        resolve(res);
+    });
+});
+
+beforeEach(() => {
+    testApp = request(app);
+});
+
+describe('Words Routes', () => {
+    it('Word', async () => {
+        const word = await makeGetRequest('/word')
+        expect(word.status).toBe(200)
     })
-    // it('Word', async () => {
-    //     const res = await request(app)
-    //         .get('/word')
-    //     expect(res.status).toBe(200)
-    // })
 })

@@ -1,9 +1,9 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-const server = app.listen(80, function () {
-    console.log('App listening on port ' + 80)
-});
+// const server = app.listen(80, function () {
+//     console.log('App listening on port ' + 80)
+// });
 
 // let testApp;
 
@@ -47,11 +47,11 @@ describe('Words Routes', () => {
     //     }
     // })
     it('Word', async () => {
-        const agent = request.agent(server)
-        const res = await agent.get("/word")
+        // const agent = request.agent(server)
+        // const res = await agent.get("/word")
         // console.log(res)
-        // const res = await request(app)
-        //     .get('/word')
+        const res = await request(app)
+            .get('/word')
         // console.log(res)
         expect(res.status).toBe(200)
     })

@@ -46,7 +46,7 @@ jobs:
       with:
         context: ./
         file: ./Dockerfile
-      run: docker-compose up
+      #run: docker-compose up
 
     - name: perform tests
       run: npm run test

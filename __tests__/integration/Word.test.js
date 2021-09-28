@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../src/app');
 
 const server = app.listen(80, function () {
-    console.log('App listening on port ' + process.env.PORT)
+    console.log('App listening on port ' + 80)
 });
 
 // let testApp;

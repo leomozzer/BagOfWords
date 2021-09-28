@@ -18,8 +18,37 @@ beforeEach(() => {
 });
 
 describe('Words Routes', () => {
+    // it('Word', async () => {
+    //     // const word = await makeGetRequest('/word')
+    //     // // console.log(word)
+    //     // expect(word.status).toBe(200)
+    //     // // // mockAxios.get.mockImplementationOnce(() => {
+    //     // // //     Promise.resolve({
+    //     // // //         'data': {
+    //     // // //             'results': ['Ola']
+    //     // // //         }
+    //     // // //     })
+    //     // // // })
+    //     // // const res = await request(app)
+    //     // //     .get('/word')
+    //     // // // console.log(res)
+    //     // // expect(res.status).toBe(200)
+    // })
+    // test("Word", () => {
+    //     const responseObject = {}
+    //     const response = {
+    //         json: jest.fn().mockImplementation((result) => {
+    //             responseObject = result
+    //         })
+    //     }
+    // })
     it('Word', async () => {
-        const word = await makeGetRequest('/word')
-        expect(word.status).toBe(200)
+        // const agent = request.agent("127.0.0.1:80")
+        // const res = await agent.get("word")
+        // console.log(res)
+        const res = await request(app)
+            .get('/word')
+        console.log(res)
+        expect(res.status).toBe(200)
     })
 })

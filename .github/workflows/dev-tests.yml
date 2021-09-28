@@ -40,7 +40,14 @@ jobs:
       uses: JesseTG/rm@v1.0.2
       with:
         path: ${{ env.GITHUB_WORKSPACE}}/__tests__/unit
-      
+
+    - name: start docker
+      uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+      run: docker-compose up
+
     - name: perform tests
       run: npm run test
         

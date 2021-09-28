@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [*]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -43,9 +43,9 @@ jobs:
 
     - name: start docker
       uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./Dockerfile
+      with:
+        context: ./
+        file: ./Dockerfile
       run: docker-compose up
 
     - name: perform tests

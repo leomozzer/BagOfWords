@@ -41,12 +41,12 @@ jobs:
       with:
         path: ${{ env.GITHUB_WORKSPACE}}/__tests__/unit
 
-    - name: start docker
-      uses: docker/build-push-action@v2
-      with:
-        context: ./
-        file: ./Dockerfile
-      #run: docker-compose up
+    - name: docker compose
+      run: docker-compose up -d
+      # uses: docker/build-push-action@v2
+      # with:
+      #   context: ./
+      #   file: ./Dockerfile
 
     - name: perform tests
       run: npm run test

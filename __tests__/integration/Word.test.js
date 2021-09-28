@@ -1,21 +1,25 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-let testApp;
-
-const makeGetRequest = path => new Promise((resolve, reject) => {
-    testApp.get(path).end((err, res) => {
-        if (err) {
-            return reject(err);
-        }
-
-        resolve(res);
-    });
+const server = app.listen(80, function () {
+    console.log('App listening on port ' + process.env.PORT)
 });
 
-beforeEach(() => {
-    testApp = request(app);
-});
+// let testApp;
+
+// const makeGetRequest = path => new Promise((resolve, reject) => {
+//     testApp.get(path).end((err, res) => {
+//         if (err) {
+//             return reject(err);
+//         }
+
+//         resolve(res);
+//     });
+// });
+
+// beforeEach(() => {
+//     testApp = request(app);
+// });
 
 describe('Words Routes', () => {
     // it('Word', async () => {
@@ -43,12 +47,12 @@ describe('Words Routes', () => {
     //     }
     // })
     it('Word', async () => {
-        // const agent = request.agent("127.0.0.1:80")
-        // const res = await agent.get("word")
+        const agent = request.agent(server)
+        const res = await agent.get("/word")
         // console.log(res)
-        const res = await request(app)
-            .get('/word')
-        console.log(res)
+        // const res = await request(app)
+        //     .get('/word')
+        // console.log(res)
         expect(res.status).toBe(200)
     })
 })

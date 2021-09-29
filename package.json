@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "gittest": "docker-compose up",
     "test": "jest",
     "dev": "nodemon src/tests/local.js --ignore __tests__",
     "predeploy": "del node_modules && npm install --platform=linux --arch=x64",

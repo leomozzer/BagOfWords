@@ -41,13 +41,13 @@ jobs:
       with:
         path: /__tests__/unit/Dictionary.test.js
 
-    - name: docker compose
-      run: docker-compose up -d
+    # - name: docker compose
+    #   run: docker-compose up -d
       # uses: docker/build-push-action@v2
       # with:
       #   context: ./
       #   file: ./Dockerfile
 
-    - name: perform tests
-      run: npm run test
+    - name: perform tests with docker
+      run: npm run gittest
         

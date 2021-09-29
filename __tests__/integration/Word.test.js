@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
+const server = app.listen(80, "127.0.0.1", () => { })
+
 // const server = app.listen(80, function () {
 //     console.log('App listening on port ' + 80)
 // });
@@ -50,7 +52,7 @@ describe('Words Routes', () => {
         // const agent = request.agent(server)
         // const res = await agent.get("/word")
         // console.log(res)
-        const res = await request(app)
+        const res = await request(server)
             .get('/word')
         // console.log(res)
         expect(res.status).toBe(200)

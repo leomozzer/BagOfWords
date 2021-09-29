@@ -4,7 +4,7 @@ const app = require('../../src/app');
 
 const server = app.listen(80, "127.0.0.1", () => { })
 
-let requestBind = request.bind(request, "http://localhost:80")
+let requestBind = request.bind(request, "http://127.0.0.1:80")
 
 // const server = app.listen(80, function () {
 //     console.log('App listening on port ' + 80)

@@ -49,5 +49,5 @@ jobs:
       #   file: ./Dockerfile
 
     - name: perform tests with docker
-      run: npm run gittest
+      run: npm run dockertest
         

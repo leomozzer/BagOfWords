@@ -36,10 +36,10 @@ jobs:
     - name: Install DEV dependencies
       run: npm install -D
       
-    - name: Remove File
+    - name: Remove File Dictionary.test
       uses: JesseTG/rm@v1.0.2
       with:
-        path: /__tests__/unit
+        path: /__tests__/unit/Dictionary.test.js
 
     - name: docker compose
       run: docker-compose up -d

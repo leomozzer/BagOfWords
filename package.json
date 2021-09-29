@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gittest": "docker-compose up",
+    "dockertest": "docker-compose -f .\\docker-compose-tests.yml up",
     "test": "jest",
-    "dev": "nodemon src/tests/local.js --ignore __tests__",
+    "dev": "nodemon src/index.js --ignore __tests__",
+    "start": "node src/index.js",
     "predeploy": "del node_modules && npm install --platform=linux --arch=x64",
     "deploy": "serverless deploy -v",
     "postdeploy": "del node_modules && npm install",

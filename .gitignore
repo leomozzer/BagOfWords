@@ -10,3 +10,4 @@ serverless.yml
 .env
 src/data
 coverage
+__mocks__

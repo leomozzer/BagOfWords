@@ -11,3 +11,5 @@ serverless.yml
 src/data
 coverage
 __mocks__
+
+azure

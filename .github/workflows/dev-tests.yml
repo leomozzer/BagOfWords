@@ -36,7 +36,7 @@ jobs:
     - name: Install DEV dependencies
       run: npm install -D
     
-     - name: Install DEV dependencies
+    - name: Tests
       run: npm run dockertest      
       
     # - name: Remove File Dictionary.test

@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm install
-    install -g serverless 
+    npm install -g serverless 
   displayName: 'npm install packages & serverless'
 - task: CmdLine@2
   inputs:

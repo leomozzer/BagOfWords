@@ -14,7 +14,7 @@ provider:
 
 functions:
   app:
-    handler: src/index.handler
+    handler: src/serverless.handler
     events:
       - http:
           path: /{any+}

@@ -27,7 +27,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'rename serverless-copy.yml serverless.yml'
+    script: 'mv serverless-copy.yml serverless.yml'
 
 - task: CmdLine@2
   inputs:

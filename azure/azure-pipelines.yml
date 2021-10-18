@@ -9,6 +9,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+ - group: "BagOfWords var group"
 steps:
 - task: NodeTool@0
   inputs:
@@ -21,7 +23,7 @@ steps:
   displayName: 'npm install packages & serverless'
 - task: CmdLine@2
   inputs:
-    script: 'serverless config credentials -o --provider aws --key $(aws-key) --secret $(aws-secret)'
+    script: 'serverless config credentials -o --provider aws --key $aws-key --secret $aws-secret'
 
 - task: CmdLine@2
   inputs:
@@ -29,4 +31,4 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'serverless deploy --verbose --stage dev --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY) --MICROSOFT_TRANSLATOR_LOCATION $(MICROSOFT-TRANSLATOR-LOCATION)'
+    script: 'serverless deploy --verbose --stage dev --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY $MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY --MICROSOFT_TRANSLATOR_LOCATION $MICROSOFT-TRANSLATOR-LOCATION'

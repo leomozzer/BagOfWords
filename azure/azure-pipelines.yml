@@ -36,12 +36,3 @@ steps:
   inputs:
     script: 'serverless deploy --verbose --stage dev --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY) --MICROSOFT_TRANSLATOR_LOCATION $(MICROSOFT-TRANSLATOR-LOCATION)'
   displayName: "Deploy dev"
-
-jobs:
-- job: A
-  steps:
-  - bash: echo "A"
-
-- job: B
-  steps:
-  - bash: echo "B

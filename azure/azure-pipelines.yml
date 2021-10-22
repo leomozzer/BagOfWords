@@ -10,31 +10,12 @@ variables:
 stages:
   - stage: build
     jobs:
-    - job: Test
-      timeoutInMinutes: 20
-      pool:
-        vmImage: ubuntu-latest
-      steps:
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '12.x'
-        displayName: 'Install Node.js'
-      - script: |
-          npm install
-          npm install -g serverless
-        displayName: 'npm install packages & serverless'
+    - template: /azure/deploy.yml
+      parameters:
+        stage: dev
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)
+        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
+        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
 
-      - task: CmdLine@2
-        inputs:
-          script: 'serverless config credentials -o --provider aws --key $(aws-key) --secret $(aws-secret)'
-        displayName: "Configure serverless with AWS credentials"
-
-      - task: CmdLine@2
-        inputs:
-          script: 'mv serverless-copy.yml serverless.yml'
-        displayName: "Rename serverless.yml file"
-
-      - task: CmdLine@2
-        inputs:
-          script: 'serverless deploy --verbose --stage dev --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY) --MICROSOFT_TRANSLATOR_LOCATION $(MICROSOFT-TRANSLATOR-LOCATION)'
-        displayName: "Deploy dev"
+      

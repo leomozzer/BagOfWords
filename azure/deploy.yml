@@ -6,7 +6,7 @@ parameters:
   - name: microsoftSubscription
 
 jobs:
-- job: 'npm install packages & serverless'
+- job: 'ConfigApp'
   pool: 
     vmImage: ubuntu-latest
   steps:

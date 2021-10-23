@@ -10,15 +10,21 @@ jobs:
   pool: 
     vmImage: ubuntu-latest
   steps:
-  - template: /azure/templates/include-npm-step.yml
-- job: 'Serverless configure & deploy'
-  pool: 
-    vmImage: ubuntu-latest
-  steps:
-  - template: /azure/templates/serverless-deploy.yml
-    parameters:
-        stage: dev
-        awsSecret: ${{ parameters.awsSecret }}
-        awsKey: ${{ parameters.awsKey }}
-        microsoftLocation: ${{ parameters.microsoftLocation }}
-        microsoftSubscription: ${{ parameters.microsoftSubscription }}
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
+  - script: |
+      npm install
+      npm install -g serverless
+    displayName: 'npm install packages & serverless'
+
+  - task: CmdLine@2
+    inputs:
+      script: 'serverless config credentials -o --provider aws --key ${{ parameters.awsKey }} --secret ${{ parameters.awsSecret }}'
+    displayName: "Configure serverless with AWS credentials"
+
+  - task: CmdLine@2
+    inputs:
+    - script: 'serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY ${{ parameters.microsoftSubscription }} --MICROSOFT_TRANSLATOR_LOCATION ${{ parameters.microsoftLocation }}'
+    displayName: "Deploy ${{ parameters.stageDeployment }}"

@@ -1,38 +1,33 @@
 parameters:
-  - name: stage
+  - name: stageDeployment
   - name: awsSecret
   - name: awsKey
   - name: microsoftLocation
   - name: microsoftSubscription
 
-stages:
-  - stage: build
-    jobs:
-    - job: Dev
-      timeoutInMinutes: 20
-      pool:
-        vmImage: ubuntu-latest
-      steps:
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '12.x'
-        displayName: 'Install Node.js'
-      - script: |
-          npm install
-          npm install -g serverless
-        displayName: 'npm install packages & serverless'
+pool:
+  vmImage: ubuntu-latest
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+- script: |
+    npm install
+    npm install -g serverless
+  displayName: 'npm install packages & serverless'
 
-      - task: CmdLine@2
-        inputs:
-          script: 'serverless config credentials -o --provider aws --key ${{ parameters.awsKey }} --secret ${{ parameters.awsSecret }}'
-        displayName: "Configure serverless with AWS credentials"
+- task: CmdLine@2
+  inputs:
+    script: 'serverless config credentials -o --provider aws --key ${{ parameters.awsKey }} --secret ${{ parameters.awsSecret }}'
+  displayName: "Configure serverless with AWS credentials"
 
-      - task: CmdLine@2
-        inputs:
-          script: 'mv serverless-copy.yml serverless.yml'
-        displayName: "Rename serverless.yml file"
+- task: CmdLine@2
+  inputs:
+    script: 'mv serverless-copy.yml serverless.yml'
+  displayName: "Rename serverless.yml file"
 
-      - task: CmdLine@2
-        inputs:
-          script: 'serverless deploy --verbose --stage ${{ parameters.stage }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY ${{ parameters.microsoftSubscription }} --MICROSOFT_TRANSLATOR_LOCATION ${{ parameters.microsoftLocation }}'
-        displayName: "Deploy dev"
+- task: CmdLine@2
+  inputs:
+    script: 'serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY ${{ parameters.microsoftSubscription }} --MICROSOFT_TRANSLATOR_LOCATION ${{ parameters.microsoftLocation }}'
+  displayName: "Deploy dev"

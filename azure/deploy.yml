@@ -14,6 +14,12 @@ jobs:
     inputs:
       versionSpec: '12.x'
     displayName: 'Install Node.js'
+    
+  - task: CmdLine@2 
+    inputs:
+      script: 'mv serverless-copy.yml serverless.yml'
+    displayName: 'Rename serverless.yml file'
+
   - script: |
       npm install
       npm install -g serverless

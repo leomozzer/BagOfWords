@@ -10,7 +10,14 @@ variables:
 pool:
   vmImage: ubuntu-latest
 stages:
-  - stage: build
+  - stage: configure
+    jobs:
+    - job: Rename File
+      - task: CmdLine@2
+        inputs:
+          script: 'mv serverless-copy.yml serverless.yml'
+        displayName: "Rename serverless.yml file"
+  - stage: dev
     jobs:
     - template: /azure/deploy.yml
       parameters:

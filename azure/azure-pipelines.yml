@@ -5,27 +5,16 @@
 
 trigger:
 - main
-variables:
-  - group: "BagOfWords var group"
+
 pool:
   vmImage: ubuntu-latest
+
 stages:
   - stage: configure
     jobs:
-    - job: Rename-File
-      steps: 
-        - task: CmdLine@2
+      - job: RenameFile
+        steps:
+        - task: CmdLine@2 
           inputs:
             script: 'mv serverless-copy.yml serverless.yml'
-          displayName: "Rename serverless.yml file"
-  - stage: dev
-    jobs:
-    - template: /azure/deploy.yml
-      parameters:
-        stage: dev
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)
-        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
-        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
-
-      
+          displayName: 'Rename serverless.yml file'

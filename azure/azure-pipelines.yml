@@ -7,6 +7,8 @@ trigger:
 - main
 variables:
   - group: "BagOfWords var group"
+pool:
+  vmImage: ubuntu-latest
 stages:
   - stage: build
     jobs:

@@ -21,12 +21,12 @@ stages:
           inputs:
             script: 'mv serverless-copy.yml serverless.yml'
           displayName: 'Rename serverless.yml file'
-  - stage: Dev
+  - stage: dev
     jobs:
-      - template: /azure/deploy.yml
-        parameters:
-          stage: dev
-          awsSecret: $(aws-secret)
-          awsKey: $(aws-key)  
-          microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
-          microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+    - template: /azure/deploy.yml
+      parameters:
+        stage: dev
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)  
+        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
+        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)

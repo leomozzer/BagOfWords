@@ -21,7 +21,7 @@ stages:
           inputs:
             script: 'mv serverless-copy.yml serverless.yml'
           displayName: 'Rename serverless.yml file'
-  - stage: dev
+  - stage: Dev
     jobs:
       - template: /azure/deploy.yml
         parameters:

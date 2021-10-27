@@ -1,5 +1,6 @@
 const { WordDefinition } = require("../api/Dictionary");
 const { MicrosoftTranslate } = require("../models/Translate");
+const { GenerateRandomWords } = require("../models/Words");
 
 function GetExample(meanings) {
     let example = ""
@@ -27,11 +28,18 @@ module.exports = {
     async HandleTranslatedWords(words, language = "en", output_language) {
         let BagOfWords = [];
         for (const word of words) {
-            const TranslatedWords = await MicrosoftTranslate(word, language, output_language)
+            let TranslatedWords = await MicrosoftTranslate(word, language, output_language)
             if (TranslatedWords['error']) { return TranslatedWords['error'] }
             if (TranslatedWords['code'] === "400036") { return TranslatedWords['message'] }
+            let GetDefinition
             for (const wd of TranslatedWords) {
-                const GetDefinition = await WordDefinition(wd['to'], wd['text']);
+                try {
+                    GetDefinition = await WordDefinition(wd['to'], wd['text']);
+                }
+                catch (error) {
+                    TranslatedWords = await MicrosoftTranslate(GenerateRandomWords(1)[0], language, output_language)
+                    GetDefinition = await WordDefinition(TranslatedWords[0]['to'], TranslatedWords[0]['text']);
+                }
                 if (GetDefinition['title']) { }
                 let FirstDefinition = GetDefinition[0];
                 let example = "";

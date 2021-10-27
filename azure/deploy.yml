@@ -6,7 +6,7 @@ parameters:
   - name: microsoftSubscription
 
 jobs:
-- job: 'ConfigApp ${{ parameters.stageDeployment }}'
+- job: 'ConfigApp-${{ parameters.stageDeployment }}'
   pool: 
     vmImage: ubuntu-latest
   steps:

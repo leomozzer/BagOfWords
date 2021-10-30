@@ -163,3 +163,41 @@ npm run deploy
 ```
 
 ## Azure DevOps
+In the folder `Azure` it was created the file that is responsible to run the (`Azure Pipelines`)[azure/azure-pipelines.yml].
+First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
+* aws-key - AWS key of the user
+* aws-secret - AWS secret of the user
+* MICROSOFT-TRANSLATOR-LOCATION - location where Microsoft translator is
+* MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY - Key from the Microsoft translator
+
+In the `Library` from Azure DevOps, create a new variable group called `BagOfWords var group` (or chose a name that you want), click in the `Link secrets from an Azure key vault variables`. In `Variables`, click on `Add` and select all the secrets from the key vault. Click on save.
+
+This is the sample of the azure-pipeline.yml. It was created an template file to use as component called [deploy.yml](azure/deploy.yml).
+```
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+  paths:
+    exclude: 
+    - README.md
+    - LICENSE
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: "BagOfWords var group" #Library group that was created
+
+stages:      
+  - stage: dev
+    jobs:
+    - template: /azure/deploy.yml #Using a deployment template to build and deploy the project
+      parameters:
+        stageDeployment: dev
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)  
+        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
+        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+```

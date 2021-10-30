@@ -161,3 +161,5 @@ As this project was built with the serverless framework and the provider was set
 ```
 npm run deploy
 ```
+
+## Azure DevOps

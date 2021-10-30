@@ -163,7 +163,7 @@ npm run deploy
 ```
 
 ## Azure DevOps
-In the folder `Azure` it was created the file that is responsible to run the (`Azure Pipelines`)[azure/azure-pipelines.yml].
+In the folder `Azure` it was created the file that is responsible to run the ![`Azure Pipelines`](azure/azure-pipelines.yml).
 First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
 * aws-key - AWS key of the user
 * aws-secret - AWS secret of the user

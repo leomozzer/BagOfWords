@@ -23,6 +23,7 @@ stages:
   - stage: test
     jobs:
     - template: /azure/tests.yml
+    continueOnError: true
 
   - stage: dev
     jobs:

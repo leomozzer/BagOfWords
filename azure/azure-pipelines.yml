@@ -21,7 +21,7 @@ variables:
 
 stages:
   - stage: test
-  - jobs:
+    jobs:
     - template: /azure/tests.yml
 
   - stage: dev

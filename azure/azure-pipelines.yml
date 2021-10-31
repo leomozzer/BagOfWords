@@ -19,7 +19,11 @@ pool:
 variables:
   - group: "BagOfWords var group"
 
-stages:      
+stages:
+  - stage: test
+  - jobs:
+    - template: /azure/tests.yml
+
   - stage: dev
     jobs:
     - template: /azure/deploy.yml

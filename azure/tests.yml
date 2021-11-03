@@ -12,5 +12,5 @@ jobs:
       npm install -D
     displayName: 'npm install & devDependencies'
   - script: |
-      npm run test --watchAll=false
+      npm run test
     displayName: 'perform tests'

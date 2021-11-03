@@ -4,8 +4,26 @@ parameters:
   - name: awsKey
   - name: microsoftLocation
   - name: microsoftSubscription
+  - name: performTests
 
 jobs:
+- job: 'Tests'
+  condition: eq(${{ parameters.stageDeployment }}, 'true')
+  pool: 
+    vmImage: ubuntu-latest
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
+  - script: |
+      npm install
+      npm install -D
+    displayName: 'npm install & devDependencies'
+  - script: |
+      npm run test -- --watchAll=false
+    displayName: 'perform tests'
+    
 - job: 'ConfigApp_${{ parameters.stageDeployment }}'
   pool: 
     vmImage: ubuntu-latest

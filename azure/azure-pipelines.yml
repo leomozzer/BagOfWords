@@ -20,9 +20,9 @@ variables:
   - group: "BagOfWords var group"
 
 stages:
-  - stage: test
-    jobs:
-    - template: /azure/tests.yml
+  # - stage: test
+  #   jobs:
+  #   - template: /azure/tests.yml
 
   - stage: dev
     condition: succeededOrFailed()
@@ -34,3 +34,4 @@ stages:
         awsKey: $(aws-key)  
         microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+        performTests: true

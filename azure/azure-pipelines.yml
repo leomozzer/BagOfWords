@@ -23,9 +23,9 @@ stages:
   - stage: test
     jobs:
     - template: /azure/tests.yml
-    continueOnError: true
 
   - stage: dev
+    condition: succeededOrFailed()
     jobs:
     - template: /azure/deploy.yml
       parameters:

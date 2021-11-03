@@ -5,10 +5,11 @@ parameters:
   - name: microsoftLocation
   - name: microsoftSubscription
   - name: performTests
+    type: boolean
 
 jobs:
 - job: 'Tests'
-  condition: eq(${{ parameters.stageDeployment }}, 'true')
+  condition: eq(${{ parameters.performTests }}, 'true')
   pool: 
     vmImage: ubuntu-latest
   steps:
@@ -23,7 +24,7 @@ jobs:
   - script: |
       npm run test -- --watchAll=false
     displayName: 'perform tests'
-    
+
 - job: 'ConfigApp_${{ parameters.stageDeployment }}'
   pool: 
     vmImage: ubuntu-latest

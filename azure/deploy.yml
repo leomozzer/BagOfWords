@@ -5,7 +5,9 @@ parameters:
   - name: microsoftLocation
   - name: microsoftSubscription
   - name: performTests
+    default: false
     type: boolean
+
 
 jobs:
 - job: 'Tests'

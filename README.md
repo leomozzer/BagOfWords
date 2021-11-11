@@ -173,7 +173,7 @@ First it's needed a KeyVault to store all the secrets needed, so create a new on
 * MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY - Key from the Microsoft translator
 
 ### Terraform (optional)
-It was created an terraform script to create the `Key Vault` and the Text Translator in the `Cognitive Services`. It's optional but you can save some time doing it. It's required to rename the file [terraform-copy.tfvars](terraform-main/terraform-copy.tfvars) to `terraform-copy.tfvars` and add the following values:
+It was created an terraform script to create the `Key Vault` and the Text Translator in the `Cognitive Services`. It's optional but you can save some time doing it. It's required to rename the file [terraform-copy.tfvars](terraform-main/terraform-copy.tfvars) to `terraform.tfvars` and add the following values:
 ```
 #Can be get using the command `az account show`
 subscription_id             = "" #Subscription ID of Azure account

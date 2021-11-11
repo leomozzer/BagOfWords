@@ -30,4 +30,4 @@ stages:
         awsKey: $(aws-key)  
         microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
-        performTests: true
+        performTests: false

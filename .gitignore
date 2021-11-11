@@ -11,4 +11,3 @@ serverless.yml
 src/data
 coverage
 __mocks__
-terraform-main

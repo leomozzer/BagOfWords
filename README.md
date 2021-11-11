@@ -164,16 +164,35 @@ npm run deploy
 
 ## Azure DevOps
 In the folder `Azure` it was created the file that is responsible to run the [`Azure Pipelines`](azure/azure-pipelines.yml).
+
+### Key Vault
 First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
 * aws-key - AWS key of the user
 * aws-secret - AWS secret of the user
 * MICROSOFT-TRANSLATOR-LOCATION - location where Microsoft translator is
 * MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY - Key from the Microsoft translator
 
+### Terraform (optional)
+It was created an terraform script to create the `Key Vault` and the Text Translator in the `Cognitive Services`. It's optional but you can save some time doing it. It's required to rename the file [terraform-copy.tfvars](terraform-main/terraform-copy.tfvars) to `terraform-copy.tfvars` and add the following values:
+```
+#Can be get using the command `az account show`
+subscription_id             = "" #Subscription ID of Azure account
+tenant_id                   = "" #homeTenantId
+#Values that are set in the App registrations https://support.lacework.com/hc/en-us/articles/360029107274-Gather-the-Required-Azure-Client-ID-Tenant-ID-and-Client-Secret
+client_id                   = ""
+client_secret               = ""
+aws_secret = ""
+aws_key = ""
+```
+
+Access the directory `terraform-main` and run the commands `terraform init`, `terraform plan` and `terraform apply`.
+
+### Library
 In the `Library` from Azure DevOps, create a new variable group called `BagOfWords var group` (or chose a name that you want), click in the `Link secrets from an Azure key vault variables`. In `Variables`, click on `Add` and select all the secrets from the key vault. Click on save.
 
 ![Image](docs/Azure/DevOps_library.jpg)
 
+### Azure Pipeline
 This is the sample of the azure-pipeline.yml. It was created an template file to use as component called [deploy.yml](azure/deploy.yml).
 ```
 trigger:

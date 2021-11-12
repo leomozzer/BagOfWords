@@ -7,6 +7,9 @@ jobs:
   pool: 
     vmImage: ubuntu-latest
   steps:
+  - script: |
+      az login --service-principal --username $(CLIENT-ID) --password $(CLIENT-SECRET) --tenant $(TENANT-ID)
+    displayName: 'AZ Login'  
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
     inputs:
       terraformVersion: 0.14.7

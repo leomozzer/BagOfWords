@@ -25,7 +25,7 @@ jobs:
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
-      commandOptions: -input=false -var "app_name=BagOfWords2" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=East US" -var "aws_secret=$(awsSecret)" -var "aws_key=$(awsKey)"
+      commandOptions: -input=false -var "app_name=BagOfWords2" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=East US" -var "aws_secret='$(awsSecret)'" -var "aws_key='$(awsKey)'"
       displayName: 'Terraform plan'
       runAzLogin: true
       environmentServiceName: 'AzureDevOps'

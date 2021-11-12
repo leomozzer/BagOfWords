@@ -23,7 +23,7 @@ variables:
 stages:
   - stage: terraform
     jobs:
-    - template: /azure/template/terraform.yml
+    - template: azure/templates/terraform.yml
 
   - stage: dev
     condition: succeededOrFailed()

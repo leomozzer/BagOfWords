@@ -5,7 +5,8 @@ jobs:
   steps:
   - task: TerraformInstaller@0
     inputs:
-      terraformVersion: '1.0.11'
+      terraformVersion: 'latest'
+    displayName: 'Install Terraform'
   - task: TerraformCLI@0
     inputs:
       command: 'init'

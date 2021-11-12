@@ -39,3 +39,5 @@ stages:
         microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
         performTests: false
+        getKeyVault: true
+        customKeyVaultName: "BagOfWords2-kv" #app_name-kv

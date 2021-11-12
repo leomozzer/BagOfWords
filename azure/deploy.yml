@@ -23,7 +23,7 @@ jobs:
       azureSubscription: 'AzureDevOps'
       KeyVaultName: ${{ parameters.customKeyVaultName }}
       SecretsFilter: '*'
-      RunAsPreJob: false
+      RunAsPreJob: true
 - job: 'Tests'
   condition: eq(${{ parameters.performTests }}, 'true')
   pool: 

@@ -17,6 +17,7 @@ parameters:
 jobs:
 - job: 'CustomKeyVault'
   condition: eq(${{ parameters.getKeyVault }}, 'true')
+  steps:
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'AzureDevOps'

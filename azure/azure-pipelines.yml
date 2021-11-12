@@ -8,6 +8,7 @@ trigger:
   branches:
     include:
     - main
+    - terraform-azure-devops
   paths:
     exclude: 
     - README.md
@@ -20,6 +21,10 @@ variables:
   - group: "BagOfWords var group"
 
 stages:
+  - stage: terraform
+    jobs:
+    - template: /azure/template/terraform.yml
+
   - stage: dev
     condition: succeededOrFailed()
     jobs:

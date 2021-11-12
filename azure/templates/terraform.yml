@@ -1,0 +1,18 @@
+jobs:
+- job: 'Environment'
+  pool: 
+    vmImage: ubuntu-latest
+  steps:
+  - task: TerraformInstaller@0
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformCLI@0
+    inputs:
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+      allowTelemetryCollection: true
+  - task: TerraformCLI@0
+    inputs:
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+      allowTelemetryCollection: true

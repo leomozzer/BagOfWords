@@ -24,6 +24,9 @@ stages:
   - stage: terraform
     jobs:
     - template: /azure/templates/terraform.yml
+      parameters:
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)
 
   - stage: dev
     condition: succeededOrFailed()

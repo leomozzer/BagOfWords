@@ -3,9 +3,9 @@ jobs:
   pool: 
     vmImage: ubuntu-latest
   steps:
-  - task: TerraformInstaller@0
+  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
     inputs:
-      terraformVersion: 'latest'
+      terraformVersion: 0.14.7
     displayName: 'Install Terraform'
   - task: TerraformCLI@0
     inputs:

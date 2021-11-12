@@ -14,13 +14,13 @@ jobs:
     inputs:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
-  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+  - task: TerraformCLI@0
     inputs:
       command: 'init'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
       displayName: 'Terraform init'
-  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+  - task: TerraformCLI@0
     inputs:
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'

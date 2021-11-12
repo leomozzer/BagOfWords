@@ -165,6 +165,10 @@ npm run deploy
 ## Azure DevOps
 In the folder `Azure` it was created the file that is responsible to run the [`Azure Pipelines`](azure/azure-pipelines.yml).
 
+### Role assignments on AZ Subscription
+* Create a new App Registration or generate a new client secret in the App Registration of the Azure DevOps.
+* Open the AZ Subscription that you manage, open the `Access control`, click on `Add` and select `Add role assignment`. Chose `Contribuitor` and on `Members` select the App Registration that is related to your Azure DeVOps.
+
 ### Key Vault
 First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
 * aws-key - AWS key of the user

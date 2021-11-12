@@ -8,3 +8,4 @@ terraform.tfvars
 terraform.tfstate.backup
 terraform.tfstate
 .terraform.tfstate.lock.info
+#terraform-copy.tfvars

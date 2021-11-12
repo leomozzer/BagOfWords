@@ -17,4 +17,4 @@ jobs:
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
-      commandOptions: -input=false -var "app_name=BagOfWords2"
+      commandOptions: -input=false -var "app_name=BagOfWords2" -var "subscription_id=$(SUBSCRIPTION-ID)"

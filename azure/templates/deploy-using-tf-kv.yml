@@ -1,25 +1,14 @@
 parameters:
   - name: stageDeployment
+  - name: awsSecret
+  - name: awsKey
+  - name: microsoftLocation
+  - name: microsoftSubscription
   - name: performTests
     default: false
     type: boolean
-  - name: getKeyVault
-    default: false
-    type: boolean
-  - name: customKeyVaultName
-    default: ""
-    type: string
 
 jobs:
-- job: 'CustomKeyVault'
-  condition: eq(${{ parameters.getKeyVault }}, 'true')
-  steps:
-  - task: AzureKeyVault@2
-    inputs:
-      azureSubscription: 'AzureDevOps'
-      KeyVaultName: ${{ parameters.customKeyVaultName }}
-      SecretsFilter: '*'
-      RunAsPreJob: true
 - job: 'Tests'
   condition: eq(${{ parameters.performTests }}, 'true')
   pool: 
@@ -59,10 +48,10 @@ jobs:
 
   - task: CmdLine@2
     inputs:
-      script: "serverless config credentials -o --provider aws --key '$(aws-key)' --secret '$(aws-secret)'"
+      script: 'serverless config credentials -o --provider aws --key ${{ parameters.awsKey }} --secret ${{ parameters.awsSecret }}'
     displayName: "Configure serverless with AWS credentials"
 
   - task: CmdLine@2
     inputs:
-      script: "serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY '$(BagOfWords3-MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)' --MICROSOFT_TRANSLATOR_LOCATION '$(BagOfWords3-MICROSOFT-TRANSLATOR-LOCATION)'"
+      script: 'serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY ${{ parameters.microsoftSubscription }} --MICROSOFT_TRANSLATOR_LOCATION ${{ parameters.microsoftLocation }}'
     displayName: "Deploy ${{ parameters.stageDeployment }}"

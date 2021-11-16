@@ -22,13 +22,6 @@ variables:
   - group: "BagOfWords var group"
 
 stages:
-  - stage: terraform
-    jobs:
-    - template: /azure/templates/terraform.yml
-      parameters:
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)
-
 # You can use this one if you have created the KeyVault and Cognitive Services manually.
   # - stage: dev
   #   condition: succeededOrFailed()
@@ -42,12 +35,30 @@ stages:
   #       microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
   #       performTests: false
 
+  - stage: terraform
+    jobs:
+    - template: /azure/templates/terraform.yml
+      parameters:
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)
+  
   - stage: dev
     condition: succeededOrFailed()
+    
     jobs:
+    - job: 'CustomKeyVault'
+      steps:
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'AzureDevOps'
+          KeyVaultName: "BagOfWords3-kv"
+          SecretsFilter: '*'
+          RunAsPreJob: true
     - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
         stageDeployment: dev
         performTests: false
-        getKeyVault: true
-        customKeyVaultName: "BagOfWords3-kv" #app_name-kv
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)
+        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
+        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)

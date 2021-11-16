@@ -40,4 +40,4 @@ stages:
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
         performTests: false
         getKeyVault: true
-        customKeyVaultName: "BagOfWords2-kv" #app_name-kv
+        customKeyVaultName: "BagOfWords3-kv" #app_name-kv

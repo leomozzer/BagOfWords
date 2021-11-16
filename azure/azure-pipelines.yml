@@ -56,3 +56,4 @@ stages:
         stageDeployment: dev
         performTests: false
         customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv
+        appName: ${{ parameters.appName }}

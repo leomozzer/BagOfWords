@@ -1,9 +1,5 @@
 parameters:
   - name: stageDeployment
-  - name: awsSecret
-  - name: awsKey
-  - name: microsoftLocation
-  - name: microsoftSubscription
   - name: performTests
     default: false
     type: boolean

@@ -7,23 +7,8 @@ parameters:
   - name: performTests
     default: false
     type: boolean
-  - name: getKeyVault
-    default: false
-    type: boolean
-  - name: customKeyVaultName
-    default: ""
-    type: string
 
 jobs:
-- job: 'CustomKeyVault'
-  condition: eq(${{ parameters.getKeyVault }}, 'true')
-  steps:
-  - task: AzureKeyVault@2
-    inputs:
-      azureSubscription: 'AzureDevOps'
-      KeyVaultName: ${{ parameters.customKeyVaultName }}
-      SecretsFilter: '*'
-      RunAsPreJob: true
 - job: 'Tests'
   condition: eq(${{ parameters.performTests }}, 'true')
   pool: 

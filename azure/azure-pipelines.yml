@@ -28,10 +28,23 @@ stages:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)
 
+# You can use this one if you have created the KeyVault and Cognitive Services manually.
+  # - stage: dev
+  #   condition: succeededOrFailed()
+  #   jobs:
+  #   - template: /azure/templates/deploy.yml
+  #     parameters:
+  #       stageDeployment: dev
+  #       awsSecret: $(aws-secret)
+  #       awsKey: $(aws-key)  
+  #       microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
+  #       microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+  #       performTests: false
+
   - stage: dev
     condition: succeededOrFailed()
     jobs:
-    - template: /azure/deploy.yml
+    - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
         stageDeployment: dev
         awsSecret: $(aws-secret)

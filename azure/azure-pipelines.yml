@@ -44,21 +44,9 @@ stages:
   
   - stage: dev
     condition: succeededOrFailed()
-    
     jobs:
-    - job: 'CustomKeyVault'
-      steps:
-      - task: AzureKeyVault@2
-        inputs:
-          azureSubscription: 'AzureDevOps'
-          KeyVaultName: "BagOfWords3-kv"
-          SecretsFilter: '*'
-          RunAsPreJob: true
     - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
         stageDeployment: dev
         performTests: false
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)
-        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
-        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+        customKeyVaultName: "BagOfWords3-kv" #app_name-kv

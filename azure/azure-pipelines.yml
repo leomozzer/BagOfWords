@@ -18,8 +18,8 @@ pool:
   vmImage: ubuntu-latest
 
 #You can use this one if you have created the KeyVault and Cognitive Services manually.
-# variables:
-#   - group: "BagOfWords var group"
+variables:
+  - group: "BagOfWords var group"
 
 stages:
   - stage: terraform

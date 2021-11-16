@@ -59,7 +59,7 @@ jobs:
 
   - task: CmdLine@2
     inputs:
-      script: 'serverless config credentials -o --provider aws --key $(aws-key) --secret $(aws-secret)'
+      script: "serverless config credentials -o --provider aws --key '$(aws-key)' --secret '$(aws-secret)'"
     displayName: "Configure serverless with AWS credentials"
 
   - task: CmdLine@2

@@ -16,7 +16,10 @@ trigger:
 
 parameters:
   - name: appName
-    default: "BagOfWords3"
+    default: "BagOfWords-dev"
+    type: string
+  - name: appLocation
+    default: "East US"
     type: string
 
 pool:
@@ -47,6 +50,7 @@ stages:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)
         appName: ${{ parameters.appName }}
+        appLocation: ${{ parameters.appLocation }}
   
   - stage: dev
     condition: succeededOrFailed()

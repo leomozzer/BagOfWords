@@ -232,7 +232,7 @@ trigger:
 
 # parameters:
 #   - name: appName
-#     default: "BagOfWords3"
+#     default: "BagOfWords"
 #     type: string
 
 pool:

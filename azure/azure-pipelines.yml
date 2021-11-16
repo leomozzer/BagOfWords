@@ -15,9 +15,9 @@ trigger:
     - LICENSE
 
 parameters:
- - name: appName
-   default: "BagOfWords3"
-   type: string
+  - name: appName
+    default: "BagOfWords3"
+    type: string
 
 pool:
   vmImage: ubuntu-latest

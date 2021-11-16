@@ -17,8 +17,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  - group: "BagOfWords var group"
+#You can use this one if you have created the KeyVault and Cognitive Services manually.
+# variables:
+#   - group: "BagOfWords var group"
 
 stages:
   - stage: terraform
@@ -47,10 +48,6 @@ stages:
     - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
         stageDeployment: dev
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)  
-        microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
-        microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
         performTests: false
         getKeyVault: true
         customKeyVaultName: "BagOfWords3-kv" #app_name-kv

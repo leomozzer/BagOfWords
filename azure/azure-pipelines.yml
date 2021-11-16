@@ -14,6 +14,11 @@ trigger:
     - README.md
     - LICENSE
 
+parameters:
+ - name: appName
+   default: "BagOfWords3"
+   type: string
+
 pool:
   vmImage: ubuntu-latest
 
@@ -41,6 +46,7 @@ stages:
       parameters:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)
+        appName: ${{ parameters.appName }}
   
   - stage: dev
     condition: succeededOrFailed()
@@ -49,4 +55,4 @@ stages:
       parameters:
         stageDeployment: dev
         performTests: false
-        customKeyVaultName: "BagOfWords3-kv" #app_name-kv
+        customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv

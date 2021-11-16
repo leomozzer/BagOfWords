@@ -33,6 +33,7 @@ jobs:
       KeyVaultName: ${{ parameters.customKeyVaultName }}
       SecretsFilter: '*'
       RunAsPreJob: true
+    displayName: 'Get secrets from ${{ parameters.customKeyVaultName }}'
   - task: NodeTool@0
     inputs:
       versionSpec: '12.x'

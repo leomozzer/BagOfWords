@@ -1,6 +1,7 @@
 parameters:
   - name: awsSecret
   - name: awsKey
+  - name: appName
 
 jobs:
 - job: 'Environment'
@@ -22,7 +23,7 @@ jobs:
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
-      commandOptions: -out=tfplan -input=false -var "app_name=BagOfWords" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=East US" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+      commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=East US" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       displayName: 'Terraform plan'
       # runAzLogin: true
       environmentServiceName: 'AzureDevOps'

@@ -32,7 +32,6 @@ jobs:
       command: 'apply'
       allowTelemetryCollection: true
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-      allowTelemetryCollection: true
       commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       displayName: 'Terraform Apply'
       environmentServiceName: 'AzureDevOps'

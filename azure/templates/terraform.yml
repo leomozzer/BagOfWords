@@ -18,20 +18,20 @@ jobs:
       command: 'init'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
-      displayName: 'Terraform init'
+    displayName: 'Terraform init'
   - task: TerraformCLI@0
     inputs:
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
       commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-      displayName: 'Terraform plan'
       environmentServiceName: 'AzureDevOps'
+    displayName: 'Terraform plan'
   - task: TerraformCLI@0
     inputs:
       command: 'apply'
       allowTelemetryCollection: true
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-      commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-      displayName: 'Terraform Apply'
+      commandOptions: -auto-approve -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       environmentServiceName: 'AzureDevOps'
+    displayName: 'Terraform Apply'

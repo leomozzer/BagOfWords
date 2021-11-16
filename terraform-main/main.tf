@@ -59,13 +59,13 @@ resource "azurerm_key_vault" "keyvault" {
 #####################
 
 resource "azurerm_key_vault_secret" "subscription-id" {
-  name         = "MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY"
+  name         = "${var.app_name}-MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY"
   value        = azurerm_cognitive_account.text_translation.primary_access_key
   key_vault_id = azurerm_key_vault.keyvault.id
 }
 
 resource "azurerm_key_vault_secret" "translator-location" {
-  name         = "MICROSOFT-TRANSLATOR-LOCATION"
+  name         = "${var.app_name}-MICROSOFT-TRANSLATOR-LOCATION"
   value        = azurerm_cognitive_account.text_translation.location
   key_vault_id = azurerm_key_vault.keyvault.id
 }

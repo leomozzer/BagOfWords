@@ -43,21 +43,21 @@ stages:
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
         performTests: false
 
-  - stage: terraform
-    jobs:
-    - template: /azure/templates/terraform.yml
-      parameters:
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)
-        appName: ${{ parameters.appName }}
-        appLocation: ${{ parameters.appLocation }}
+  # - stage: terraform
+  #   jobs:
+  #   - template: /azure/templates/terraform.yml
+  #     parameters:
+  #       awsSecret: $(aws-secret)
+  #       awsKey: $(aws-key)
+  #       appName: ${{ parameters.appName }}
+  #       appLocation: ${{ parameters.appLocation }}
   
-  - stage: dev
-    condition: succeededOrFailed()
-    jobs:
-    - template: /azure/templates/deploy-using-tf-kv.yml
-      parameters:
-        stageDeployment: dev
-        performTests: false
-        customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv
-        appName: ${{ parameters.appName }}
+  # - stage: dev
+  #   condition: succeededOrFailed()
+  #   jobs:
+  #   - template: /azure/templates/deploy-using-tf-kv.yml
+  #     parameters:
+  #       stageDeployment: dev
+  #       performTests: false
+  #       customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv
+  #       appName: ${{ parameters.appName }}

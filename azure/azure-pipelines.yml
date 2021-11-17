@@ -30,7 +30,7 @@ variables:
   - group: "BagOfWords var group"
 
 stages:
-You can use this one if you have created the KeyVault and Cognitive Services manually.
+#You can use this one if you have created the KeyVault and Cognitive Services manually.
   - stage: dev
     condition: succeededOrFailed()
     jobs:

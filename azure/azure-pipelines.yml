@@ -16,7 +16,7 @@ trigger:
 
 parameters:
   - name: appName
-    default: "BagOfWords-dev"
+    default: "BagOfWords-stage"
     type: string
   - name: appLocation
     default: "East US"

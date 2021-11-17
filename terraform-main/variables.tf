@@ -18,10 +18,6 @@ variable "location" {
   description = "Enter the location"
 }
 
-variable "azurerm_resource_group_name" {
-  description = "Enter the azurerm_resource_group_name"
-}
-
 variable "app_name" {
   description = "Enter the app_name"
 }

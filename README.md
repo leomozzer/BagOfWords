@@ -165,13 +165,6 @@ npm run deploy
 ## Azure DevOps
 In the folder `Azure` it was created the file that is responsible to run the [`Azure Pipelines`](azure/azure-pipelines.yml).
 
-### Key Vault
-First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
-* aws-key - AWS key of the user
-* aws-secret - AWS secret of the user
-* MICROSOFT-TRANSLATOR-LOCATION - location where Microsoft translator is
-* MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY - Key from the Microsoft translator
-
 ### Terraform (optional)
 It was created an terraform script to create the `Key Vault` and the Text Translator in the `Cognitive Services`. It's optional but you can save some time doing it. It's required to rename the file [terraform-copy.tfvars](terraform-main/terraform-copy.tfvars) to `terraform.tfvars` and add the following values:
 ```
@@ -187,14 +180,46 @@ aws_key = ""
 
 Access the directory `terraform-main` and run the commands `terraform init`, `terraform plan` and `terraform apply`.
 
+It was also created an pipleline template to handle with terraform files to create all the environment in the Azure side. The file [deploy-using-tf-kv.yml](azure/templates/deploy-using-tf-kv.yml) it's similar to the [deploy.yml](azure/templates/deploy.yml), the diffrence is that is using the secrets from the Key Vault that was created by the terraform.
+
+### Role assignments on AZ Subscription
+* Create a new App Registration or generate a new client secret in the App Registration of the Azure DevOps.
+* Open the AZ Subscription that you manage, open the `Access control`, click on `Add` and select `Add role assignment`. Chose `Contribuitor` and on `Members` select the App Registration that is related to your Azure DeVOps.
+
+### Key Vault
+First it's needed a KeyVault to store all the secrets needed, so create a new one and add the following secrets:
+* Manually
+```
+* aws-key - AWS key of the user
+* aws-secret - AWS secret of the user
+* MICROSOFT-TRANSLATOR-LOCATION - location where Microsoft translator is
+* MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY - Key from the Microsoft translator
+```
+* Terraform
+```
+* CLIENT-ID - Id of the App registration of the Azure DevOps
+* CLIENT-SECRET - Secret of the App registration of the Azure DevOps
+* SUBSCRIPTION-ID - Subscription id. Can be get by using `az account show`
+* TENANT-ID - Tenant Id. Can be get by using `az account show`
+```
+
 ### Library
 In the `Library` from Azure DevOps, create a new variable group called `BagOfWords var group` (or chose a name that you want), click in the `Link secrets from an Azure key vault variables`. In `Variables`, click on `Add` and select all the secrets from the key vault. Click on save.
 
 ![Image](docs/Azure/DevOps_library.jpg)
 
+<strong>In case you're using the terraform to create the environment on Azure</strong>
+![Image](docs/Azure/DevOps_library_tf.jpg)
+
 ### Azure Pipeline
 This is the sample of the azure-pipeline.yml. It was created an template file to use as component called [deploy.yml](azure/deploy.yml).
+It was also created a diffrent deployment file to handle with the terraform script. The [deploy-using-tf-kv.yml](azure/templates/deploy-using-tf-kv.yml) has all the steps needed to deploy the app.
 ```
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
 trigger:
   batch: true
   branches:
@@ -205,20 +230,46 @@ trigger:
     - README.md
     - LICENSE
 
+# parameters:
+#   - name: appName
+#     default: "BagOfWords"
+#     type: string
+
 pool:
   vmImage: ubuntu-latest
 
+#You can use this one if you have created the KeyVault and Cognitive Services manually.
 variables:
-  - group: "BagOfWords var group" #Library group that was created
+  - group: "BagOfWords var group"
 
-stages:      
+stages:
+# You can use this one if you have created the KeyVault and Cognitive Services manually.
   - stage: dev
+    condition: succeededOrFailed()
     jobs:
-    - template: /azure/deploy.yml #Using a deployment template to build and deploy the project
+    - template: /azure/templates/deploy.yml
       parameters:
         stageDeployment: dev
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)  
         microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
         microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
+        performTests: false
+
+  # - stage: terraform
+  #   jobs:
+  #   - template: /azure/templates/terraform.yml
+  #     parameters:
+  #       awsSecret: $(aws-secret)
+  #       awsKey: $(aws-key)
+  #       appName: ${{ parameters.appName }}
+  
+  # - stage: dev
+  #   condition: succeededOrFailed()
+  #   jobs:
+  #   - template: /azure/templates/deploy-using-tf-kv.yml
+  #     parameters:
+  #       stageDeployment: dev
+  #       performTests: false
+  #       customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv
 ```

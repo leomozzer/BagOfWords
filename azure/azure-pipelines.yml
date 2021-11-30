@@ -8,6 +8,7 @@ trigger:
   branches:
     include:
     - main
+    - terraform-improvements
   paths:
     exclude: 
     - README.md

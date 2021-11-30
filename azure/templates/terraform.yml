@@ -5,7 +5,7 @@ parameters:
   - name: appLocation
   - name: cloudService
   - name: serviceConnectionName
-  - name: stageDeploymentDeployment
+  - name: stageDeployment
 
 jobs:
 - job: 'Environment'

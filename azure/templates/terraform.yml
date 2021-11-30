@@ -14,7 +14,7 @@ jobs:
   steps:
   - task: AzureCLI@2
     displayName: 'Create storage account for Terraform'
-    condition: eq(${{ parameters.cloudService }}, 'Azure')
+    # condition: eq(${{ parameters.cloudService }}, 'Azure')
     inputs:
       azureSubscription: ${{ parameters.serviceConnectionName }}
       scriptType: 'bash'

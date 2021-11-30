@@ -14,7 +14,7 @@ jobs:
   steps:
   - task: AzureCLI@2
     displayName: 'Create storage account for Terraform'
-    condition: eq(${{ parameters.serviceConnectionName }}, 'Azure')
+    condition: eq(${{ parameters.cloudService }}, 'Azure')
     inputs:
       azureSubscription: ${{ parameters.serviceConnectionName }}
       scriptType: 'bash'
@@ -76,7 +76,7 @@ jobs:
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
     inputs:
-      azureSubscription: ${{ parameters.service_connection_name }}
+      azureSubscription: 'AzureDevOps'
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |

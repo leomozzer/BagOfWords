@@ -50,6 +50,8 @@ stages:
         awsKey: $(aws-key)
         appName: ${{ parameters.appName }}
         appLocation: ${{ parameters.appLocation }}
+        serviceConnectionName: 'AzureDevOps'
+        stageDeployment: dev
   
   - stage: dev
     condition: succeededOrFailed()

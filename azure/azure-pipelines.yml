@@ -52,6 +52,7 @@ stages:
         appLocation: ${{ parameters.appLocation }}
         serviceConnectionName: 'AzureDevOps'
         stageDeployment: dev
+        cloudService: 'Azure'
   
   - stage: dev
     condition: succeededOrFailed()

@@ -40,7 +40,7 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
+        az storage account create --resource-group ${{ parameters.appName }}-rg --name "sample1" --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
       displayName: 'Create storage account'
  
   # - task: TerraformCLI@0

@@ -24,15 +24,15 @@ jobs:
   #       az storage container create --name states --account-name ${{ parameters.appName }}
   #       az storage container create --name plans --account-name ${{ parameters.appName }}
 
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'AzureDevOps'
-      scriptType: 'batch'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
-        az storage container create --name states --account-name ${{ parameters.appName }}
-        az storage container create --name plans --account-name ${{ parameters.appName }}
+  # - task: AzureCLI@2
+  #   inputs:
+  #     azureSubscription: 'AzureDevOps'
+  #     scriptType: 'batch'
+  #     scriptLocation: 'inlineScript'
+  #     inlineScript: |
+  #       az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
+  #       az storage container create --name states --account-name ${{ parameters.appName }}
+  #       az storage container create --name plans --account-name ${{ parameters.appName }}
 
   # - task: Bash@3
   #   displayName: "Ensure ${{ parameters.stageDeployment }}.tfvars"
@@ -58,6 +58,12 @@ jobs:
       commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       environmentServiceName: 'AzureDevOps'
     displayName: 'Terraform plan'
+
+  - task: CmdLine@2 
+    inputs:
+      script: 'az storage account create --resource-group ${{ parameters.appName }}-rg --name "storage123" --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false'
+    displayName: 'Create Storage Account'
+  
   - task: TerraformCLI@0
     inputs:
       command: 'apply'

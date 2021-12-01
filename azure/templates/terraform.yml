@@ -24,10 +24,12 @@ jobs:
   #       az storage container create --name states --account-name ${{ parameters.appName }}
   #       az storage container create --name plans --account-name ${{ parameters.appName }}
 
-  - task: CmdLine@2
-    displayName: 'Create storage account for Terraform'
+  - task: AzureCLI@2
     inputs:
-      script: |
+      azureSubscription: 'AzureDevOps'
+      scriptType: 'batch'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
         az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
         az storage container create --name states --account-name ${{ parameters.appName }}
         az storage container create --name plans --account-name ${{ parameters.appName }}
@@ -65,13 +67,13 @@ jobs:
       environmentServiceName: 'AzureDevOps'
     displayName: 'Terraform Apply'
   
-  - task: ArchiveFiles@2
-    displayName: Archive terraform-live and plan-files
-    inputs:
-      includeRootFolder: false
-      rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
-      archiveType: tar
-      archiveFile: terraform-live-${{ parameters.stageDeployment }}.tar
+  # - task: ArchiveFiles@2
+  #   displayName: Archive terraform-live and plan-files
+  #   inputs:
+  #     includeRootFolder: false
+  #     rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
+  #     archiveType: tar
+  #     archiveFile: terraform-live-${{ parameters.stageDeployment }}.tar
 
   # - task: ArchiveFiles@2
   #   displayName: Archive terraform-modules

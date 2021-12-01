@@ -43,10 +43,11 @@ jobs:
       environmentServiceName: 'AzureDevOps'
     displayName: 'Terraform Apply'
 
-  # - task: AzureCLI@2
-  #   displayName: 'Create storage account'
-  #   inputs:
-  #     azureSubscription: 'AzureDevOps'
-  #     scriptType: 'bash'
-  #     scriptLocation: 'inlineScript'
-  #     inlineScript: 'az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false'
+  - task: AzureCLI@2
+    displayName: 'Create storage account'
+    inputs:
+      azureSubscription: 'AzureDevOps'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.appName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false

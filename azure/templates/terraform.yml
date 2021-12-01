@@ -50,6 +50,7 @@ jobs:
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
       allowTelemetryCollection: true
     displayName: 'Terraform init'
+    
   - task: TerraformCLI@0
     inputs:
       command: 'plan'
@@ -59,10 +60,10 @@ jobs:
       environmentServiceName: 'AzureDevOps'
     displayName: 'Terraform plan'
 
-  - task: CmdLine@2 
-    inputs:
-      script: 'az storage account create --resource-group ${{ parameters.appName }}-rg --name "storage123" --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false'
-    displayName: 'Create Storage Account'
+  # - task: CmdLine@2 
+  #   inputs:
+  #     script: 'az storage account create --resource-group ${{ parameters.appName }}-rg --name "storage123" --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false'
+  #   displayName: 'Create Storage Account'
   
   # - task: TerraformCLI@0
   #   inputs:
@@ -74,6 +75,7 @@ jobs:
   #   displayName: 'Terraform Apply'
 
   - task: AzureCLI@2
+    displayName: 'Create storage account'
     inputs:
       azureSubscription: 'AzureDevOps'
       scriptType: 'bash'

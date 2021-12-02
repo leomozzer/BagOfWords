@@ -52,12 +52,19 @@ jobs:
     displayName: 'Create storage account'
   
   - task: ArchiveFiles@2
-    displayName: Archive terraform-main and plan-files
+    displayName: 'Archive terraform-main and plan-files .tar'
     inputs:
       includeRootFolder: false
       rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
       archiveType: tar
       archiveFile: terraform-main-${{ parameters.stageDeployment }}.tar
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: 'terraform-main-${{ parameters.stageDeployment }}.zip'
  
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
@@ -70,4 +77,17 @@ jobs:
           --container-name plans \
           --file terraform-main-${{ parameters.stageDeployment }}.tar \
           --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.tar \
+          --account-name "${{ parameters.storageAccountName }}"
+  
+  - task: AzureCLI@2
+    displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
+    inputs:
+      azureSubscription: 'AzureDevOps'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload \
+          --container-name plans \
+          --file terraform-main-${{ parameters.stageDeployment }}.zip \
+          --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.zip \
           --account-name "${{ parameters.storageAccountName }}"

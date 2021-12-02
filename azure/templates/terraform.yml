@@ -17,6 +17,7 @@ jobs:
   - task: CmdLine@2 
     inputs:
       script: 'mv terraform-copy.tfvars terraform-${{ parameters.stageDeployment}}.tfvars'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
     displayName: 'Rename .tfvars file'
   
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0

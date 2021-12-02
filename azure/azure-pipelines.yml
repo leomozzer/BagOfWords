@@ -53,6 +53,7 @@ stages:
         serviceConnectionName: 'AzureDevOps'
         stageDeployment: dev
         cloudService: 'Azure'
+        storageAccountName: bagofwordssa
   
   - stage: dev
     condition: succeededOrFailed()

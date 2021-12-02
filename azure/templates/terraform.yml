@@ -61,7 +61,7 @@ jobs:
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
     inputs:
-      azureSubscription: ${{ parameters.service_connection_name }}
+      azureSubscription: 'AzureDevOps'
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |

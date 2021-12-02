@@ -59,14 +59,14 @@ jobs:
       archiveFile: terraform-main-${{ parameters.stageDeployment }}.tar
  
   - task: AzureCLI@2
-      displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
-      inputs:
-        azureSubscription: ${{ parameters.service_connection_name }}
-        scriptType: bash
-        scriptLocation: inlineScript
-        inlineScript: |
-          az storage blob upload \
-            --container-name plans \
-            --file terraform-main-${{ parameters.stageDeployment }}.tar \
-            --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.tar \
-            --account-name "${{ parameters.storageAccountName }}"
+    displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
+    inputs:
+      azureSubscription: ${{ parameters.service_connection_name }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload \
+          --container-name plans \
+          --file terraform-main-${{ parameters.stageDeployment }}.tar \
+          --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.tar \
+          --account-name "${{ parameters.storageAccountName }}"

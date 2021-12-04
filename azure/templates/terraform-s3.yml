@@ -83,6 +83,12 @@ jobs:
   - task: CmdLine@2 
     inputs:
       script: 'ls'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main/plan'
+    displayName: 'List folder'
+
+  - task: CmdLine@2 
+    inputs:
+      script: 'ls'
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
     displayName: 'List folder'
 

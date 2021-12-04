@@ -44,7 +44,7 @@ stages:
 
   - stage: terraform
     jobs:
-    - template: /azure/templates/terraform.yml
+    - template: /azure/templates/terraform-s3.yml
       parameters:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)

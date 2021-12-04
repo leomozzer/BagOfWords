@@ -78,7 +78,13 @@ jobs:
       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
-      targetFolder: '$(System.DefaultWorkingDirectory)/terraform-main'
+      targetFolder: '$(System.DefaultWorkingDirectory)'
+
+  - task: CmdLine@2 
+    inputs:
+      script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar -C terraform-main'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Extract files'
 
   - task: CmdLine@2 
     inputs:

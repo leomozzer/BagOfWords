@@ -96,6 +96,6 @@ jobs:
       command: 'apply'
       allowTelemetryCollection: true
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-      commandOptions: -auto-approve -lock-timeout=10m ${{ parameters.stage }}.plan"
+      commandOptions: -auto-approve -lock-timeout=10m ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: 'AzureDevOps'
     displayName: 'Terraform Apply'

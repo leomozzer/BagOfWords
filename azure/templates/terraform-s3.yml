@@ -67,7 +67,8 @@ jobs:
 - job: 'Apply'
   pool: 
     vmImage: ubuntu-latest
-  condition: eq(succeeded('Plan'), 'true')
+  dependsOn: 'Plan'
+  condition: succeeded()
   steps:
   - task: CmdLine@2 
     inputs:

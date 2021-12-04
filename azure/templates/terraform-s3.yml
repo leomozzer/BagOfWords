@@ -64,44 +64,37 @@ jobs:
       targetFolder: 'plan'
       createBucket: true
 
-# - job: 'Apply'
-#   steps:
-#   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-#     inputs:
-#       terraformVersion: 0.14.7
-#     displayName: 'Install Terraform'
+- job: 'Apply'
+  pool: 
+    vmImage: ubuntu-latest
+  condition: eq(succeeded('Plan'), 'true')
+  steps:
+  - task: CmdLine@2 
+    inputs:
+      script: 'mkdir terraform-main'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Create terraform-main folder'
 
-#   - task: TerraformCLI@0
-#     inputs:
-#       command: 'init'
-#       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-#       allowTelemetryCollection: true
-#     displayName: 'Terraform init'
-    
-#   - task: TerraformCLI@0
-#     inputs:
-#       command: 'plan'
-#       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-#       allowTelemetryCollection: true
-#       commandOptions: -out=tfplan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-#       environmentServiceName: 'AzureDevOps'
-#     displayName: 'Terraform plan'
+  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+    inputs:
+      terraformVersion: 0.14.7
+    displayName: 'Install Terraform'
+
+  - task: S3Download@1
+    displayName: 'Download plan content'
+    inputs:
+      awsCredentials: 'AWS-Connection'
+      regionName: 'us-east-1'
+      bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
+      sourceFolder: 'plan'
+      globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
+      targetFolder: '$(System.DefaultWorkingDirectory)/terraform-main'
   
-#   - task: ArchiveFiles@2
-#     displayName: 'Archive terraform-main and plan-files .tar'
-#     inputs:
-#       includeRootFolder: false
-#       rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
-#       archiveType: tar
-#       archiveFile: $(System.DefaultWorkingDirectory)/terraform-main-${{ parameters.stageDeployment }}.tar
-
-#   - task: S3Upload@1
-#     displayName: 'Upload to S3'
-#     inputs:
-#       awsCredentials: 'AWS-Connection'
-#       regionName: 'us-east-1'
-#       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
-#       sourceFolder: '$(System.DefaultWorkingDirectory)'
-#       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
-#       targetFolder: 'plan'
-#       createBucket: true
+  - task: TerraformCLI@0
+    inputs:
+      command: 'apply'
+      allowTelemetryCollection: true
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+      commandOptions: -auto-approve -input=false"
+      environmentServiceName: 'AzureDevOps'
+    displayName: 'Terraform Apply'

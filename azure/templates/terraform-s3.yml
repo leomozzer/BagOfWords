@@ -8,10 +8,6 @@ parameters:
   - name: stageDeployment
   - name: storageAccountName
 
-variables:
-  AWS.AccessKeyID: ${{ parameters.awsKey }}
-  AWS.SecretAccessKey: ${{ parameters.awsSecret }}
-
 jobs:
 - job: 'Environment'
   pool: 
@@ -56,6 +52,7 @@ jobs:
   - task: S3Upload@1
     displayName: 'Upload to S3'
     inputs:
+      awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
       sourceFolder: 'terraform-main-${{ parameters.stageDeployment }}.tar'

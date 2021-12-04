@@ -56,7 +56,7 @@ stages:
         serviceConnectionName: 'AzureDevOps'
         stageDeployment: ${{ parameters.stage }}
         cloudService: 'Azure'
-        storageAccountName: bagofwordssa
+        s3Bucket: bagofwords-${{parameters.stage}}-assets
   
   - stage: dev
     condition: succeededOrFailed()

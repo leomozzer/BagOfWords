@@ -6,6 +6,7 @@ parameters:
   - name: cloudService
   - name: serviceConnectionName
   - name: stageDeployment
+  - name: s3Bucket
 
 jobs:
 - job: 'Plan'
@@ -57,7 +58,7 @@ jobs:
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
-      bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
+      bucketName: '${{ parameters.s3Bucket}}'
       sourceFolder: '$(System.DefaultWorkingDirectory)'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: 'plan'
@@ -74,7 +75,7 @@ jobs:
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
-      bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
+      bucketName: ''${{ parameters.s3Bucket}}'
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: '$(System.DefaultWorkingDirectory)'

@@ -8,11 +8,10 @@ parameters:
   - name: stageDeployment
   - name: storageAccountName
 
-pool: 
-  vmImage: ubuntu-latest
-
 jobs:
 - job: 'Plan'
+  pool: 
+    vmImage: ubuntu-latest
   steps:
   - task: CmdLine@2 
     inputs:

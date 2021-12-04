@@ -67,7 +67,7 @@ jobs:
 - job: 'Apply'
   pool: 
     vmImage: ubuntu-latest
-  dependsOn: 'Plan'
+  dependsOn: Plan
   condition: succeeded()
   steps:
   - task: CmdLine@2 

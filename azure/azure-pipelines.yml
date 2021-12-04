@@ -15,10 +15,13 @@ trigger:
 
 parameters:
   - name: appName
-    default: "BagOfWords-stage"
+    default: "BagOfWords"
     type: string
   - name: appLocation
     default: "East US"
+    type: string
+  - name: stage
+    default: "dev"
     type: string
 
 pool:
@@ -48,10 +51,10 @@ stages:
       parameters:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)
-        appName: ${{ parameters.appName }}
+        appName: ${{ parameters.appName }}-${{${{ parameters.stage }}}}
         appLocation: ${{ parameters.appLocation }}
         serviceConnectionName: 'AzureDevOps'
-        stageDeployment: dev
+        stageDeployment: ${{ parameters.stage }}
         cloudService: 'Azure'
         storageAccountName: bagofwordssa
   

@@ -75,40 +75,16 @@ jobs:
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
-      bucketName: ''${{ parameters.s3Bucket}}'
+      bucketName: '${{ parameters.s3Bucket}}'
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: '$(System.DefaultWorkingDirectory)'
 
   - task: CmdLine@2 
     inputs:
-      script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-    displayName: 'List folder'
-
-  - task: CmdLine@2 
-    inputs:
-      script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-    displayName: 'List folder'
-
-  - task: CmdLine@2 
-    inputs:
       script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar'
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
     displayName: 'Extract files'
-
-  - task: CmdLine@2 
-    inputs:
-      script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-    displayName: 'List folder'
-
-  - task: CmdLine@2 
-    inputs:
-      script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
-    displayName: 'List folder'
 
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
     inputs:

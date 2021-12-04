@@ -10,6 +10,7 @@ parameters:
 
 jobs:
 - job: 'Plan'
+  condition: eq(${{ parameters.storageAccountName }}, 'true') #Remove later
   pool: 
     vmImage: ubuntu-latest
   steps:
@@ -67,8 +68,8 @@ jobs:
 - job: 'Apply'
   pool: 
     vmImage: ubuntu-latest
-  dependsOn: Plan
-  condition: succeeded()
+  # dependsOn: Plan
+  # condition: succeeded()
   steps:
 
   - task: S3Download@1
@@ -78,13 +79,25 @@ jobs:
       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
-      targetFolder: '$(System.DefaultWorkingDirectory)'
+      targetFolder: '$(System.DefaultWorkingDirectory)/terraform-main'
 
   - task: CmdLine@2 
     inputs:
-      script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar -C terraform-main'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      script: 'ls'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+    displayName: 'List folder'
+
+  - task: CmdLine@2 
+    inputs:
+      script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
     displayName: 'Extract files'
+
+  - task: CmdLine@2 
+    inputs:
+      script: 'ls'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+    displayName: 'List folder'
 
   - task: CmdLine@2 
     inputs:

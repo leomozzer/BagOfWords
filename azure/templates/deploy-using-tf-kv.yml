@@ -47,9 +47,9 @@ jobs:
       mv package.json serverless-deploy
       npm install
       npm install -g serverless
-      mv serverless-deploy/serverless-copy.yml serverless-deploy/serverless.yml
+      mv serverless-copy.yml serverless-deploy/serverless.yml
     displayName: 'Set up serverless folder & file'
-    
+
   - task: CmdLine@2
     inputs:
       script: "serverless config credentials -o --provider aws --key $(aws-key) --secret $(aws-secret)"

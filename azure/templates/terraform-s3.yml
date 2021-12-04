@@ -6,7 +6,6 @@ parameters:
   - name: cloudService
   - name: serviceConnectionName
   - name: stageDeployment
-  - name: storageAccountName
 
 jobs:
 - job: 'Plan'

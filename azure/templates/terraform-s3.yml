@@ -83,7 +83,7 @@ jobs:
   - task: CmdLine@2 
     inputs:
       script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
     displayName: 'List folder'
 
   - task: CmdLine@2 

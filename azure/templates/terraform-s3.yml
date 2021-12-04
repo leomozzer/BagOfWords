@@ -55,7 +55,7 @@ jobs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
-      sourceFolder: 'terraform-main-${{ parameters.stageDeployment }}.tar'
+      sourceFolder: ' $(System.DefaultWorkingDirectory)/terraform-main-${{ parameters.stageDeployment }}.tar'
       globExpressions: '**'
       targetFolder: 'plan'
       createBucket: true

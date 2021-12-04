@@ -10,7 +10,7 @@ parameters:
 
 jobs:
 - job: 'Plan'
-  condition: eq(${{ parameters.storageAccountName }}, 'true') #Remove later
+  condition: eq(${{ parameters.storageAccountName }}, 'bla') #Remove later
   pool: 
     vmImage: ubuntu-latest
   steps:

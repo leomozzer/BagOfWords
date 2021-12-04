@@ -21,7 +21,7 @@ parameters:
     default: "East US"
     type: string
   - name: stage
-    default: "dev"
+    default: "devtest"
     type: string
 
 pool:

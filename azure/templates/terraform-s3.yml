@@ -67,8 +67,8 @@ jobs:
 - job: 'Apply'
   pool: 
     vmImage: ubuntu-latest
-  # dependsOn: Plan
-  # condition: succeeded()
+  dependsOn: Plan
+  condition: succeeded()
   steps:
 
   - task: S3Download@1

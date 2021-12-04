@@ -47,7 +47,7 @@ jobs:
       includeRootFolder: false
       rootFolderOrFile: $(System.DefaultWorkingDirectory)/terraform-main
       archiveType: tar
-      archiveFile: terraform-main-${{ parameters.stageDeployment }}.tar
+      archiveFile: $(System.DefaultWorkingDirectory)/terraform-main-${{ parameters.stageDeployment }}.tar
 
   - task: S3Upload@1
     displayName: 'Upload to S3'
@@ -55,7 +55,7 @@ jobs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: 'bagofwords-${{parameters.stageDeployment}}-assets'
-      sourceFolder: 'terraform-main-${{ parameters.stageDeployment }}.tar'
-      globExpressions: '**'
+      sourceFolder: '$(System.DefaultWorkingDirectory)'
+      globExpressions: 'terraform-main-dev.tar'
       targetFolder: 'plan'
       createBucket: true

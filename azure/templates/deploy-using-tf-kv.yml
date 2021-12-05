@@ -46,6 +46,7 @@ jobs:
       mv src serverless-deploy
       mv package.json serverless-deploy
       npm install
+      npm install -D
       npm install -g serverless
       mv serverless-copy.yml serverless-deploy/serverless.yml
     displayName: 'Set up serverless folder & file'

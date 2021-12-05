@@ -54,6 +54,7 @@ jobs:
 
   - script: |
       npm install -g serverless
+      serverless plugin install -n serverless-offline
     displayName: 'npm install packages & serverless'
 
   - task: CmdLine@2

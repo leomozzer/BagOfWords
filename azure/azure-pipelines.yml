@@ -21,7 +21,7 @@ parameters:
     default: "East US"
     type: string
   - name: stage
-    default: "devtest"
+    default: "dev"
     type: string
 
 pool:
@@ -63,7 +63,7 @@ stages:
     jobs:
     - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
-        stageDeployment: dev
+        stageDeployment: ${{parameters.stage}}
         performTests: false
         customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
         appName: ${{ parameters.appName }}

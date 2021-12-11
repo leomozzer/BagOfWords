@@ -80,7 +80,6 @@ stages:
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
-              cloudService: 'Azure'
               storageName: bagofwords-${{ parameters.stage }}-assets
 
       - job: 'TerraformApply'
@@ -95,7 +94,6 @@ stages:
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
-              cloudService: 'Azure'
               storageName: bagofwords-${{ parameters.stage }}-assets
   
   - stage: Prod
@@ -110,5 +108,4 @@ stages:
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: "prod"
-              cloudService: 'Azure'
               storageName: bagofwords-prod-assets

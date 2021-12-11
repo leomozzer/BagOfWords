@@ -42,9 +42,31 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
       environmentServiceName: ${{parameters.serviceConnectionName}}
       resourceAddress: 'azurerm_resource_group.rg_app'
-      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.resourceGroup }}
+      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg
       commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       allowTelemetryCollection: true
+
+  - task: TerraformCLI@0
+    displayName: 'Import KeyVault'
+    inputs:
+      command: 'import'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+      environmentServiceName: ${{parameters.serviceConnectionName}}
+      resourceAddress: 'azurerm_key_vault.keyvault'
+      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg/providers/Microsoft.KeyVault/vaults/${{ parameters.appName }}-kv
+      commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+      allowTelemetryCollection: true
+
+  # - task: TerraformCLI@0
+  #   displayName: 'Import Cognitive'
+  #   inputs:
+  #     command: 'import'
+  #     workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+  #     environmentServiceName: ${{parameters.serviceConnectionName}}
+  #     resourceAddress: 'azurerm_cognitive_account.text_translation'
+  #     resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg/providers/Microsoft.KeyVault/vaults/${{ parameters.appName }}-kv
+  #     commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+  #     allowTelemetryCollection: true
 
   - task: TerraformCLI@0
     displayName: 'Terraform plan'

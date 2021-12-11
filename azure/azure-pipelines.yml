@@ -76,12 +76,12 @@ stages:
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-$(Release.EnvironmentName)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
-              stageDeployment: $(Release.EnvironmentName)
+              stageDeployment: ${{ parameters.stage }}
               cloudService: 'Azure'
-              s3Bucket: bagofwords-$(Release.EnvironmentName)-assets
+              s3Bucket: bagofwords-${{ parameters.stage }}-assets
 
       - job: 'TerraformApply'
         dependsOn: TerraformPlan
@@ -91,12 +91,12 @@ stages:
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-$(Release.EnvironmentName)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
-              stageDeployment: $(Release.EnvironmentName)
+              stageDeployment: ${{ parameters.stage }}
               cloudService: 'Azure'
-              s3Bucket: bagofwords-$(Release.EnvironmentName)-assets
+              s3Bucket: bagofwords-${{parameters.stage}}-assets
   
   - stage: Prod
     jobs:
@@ -106,9 +106,9 @@ stages:
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appName: ${{ parameters.appName }}-prod
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
+              stageDeployment: "prod"
               cloudService: 'Azure'
-              s3Bucket: bagofwords-${{parameters.stage}}-assets
+              s3Bucket: bagofwords-prod-assets

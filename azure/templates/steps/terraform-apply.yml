@@ -28,6 +28,13 @@ steps:
     inputs:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
+
+  - task: TerraformCLI@0
+    inputs:
+      command: 'import'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+      environmentServiceName: 'AzureDevOps'
+      allowTelemetryCollection: true
   
   - task: TerraformCLI@0
     inputs:

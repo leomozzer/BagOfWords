@@ -6,6 +6,7 @@ parameters:
   - name: cloudService
     default: "AWS"
     type: string
+  - name: serviceConnectionName
   - name: stageDeployment
   - name: storageName
   - name: resourceGroup

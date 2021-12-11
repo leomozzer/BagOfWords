@@ -70,9 +70,22 @@ stages:
 
   - stage: Dev
     jobs:
-      - job: 'Terraform'
+      - job: 'TerraformPlan'
         steps:
-          - template: /azure/templates/jobs/terraform.yml
+          - template: /azure/templates/steps/terraform-plan.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: ${{ parameters.stage }}
+              cloudService: 'Azure'
+              s3Bucket: bagofwords-${{parameters.stage}}-assets
+
+      - job: 'TerraformApply'
+        steps:
+          - template: /azure/templates/steps/terraform-apply.yml
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)

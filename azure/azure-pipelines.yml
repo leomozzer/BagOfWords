@@ -45,25 +45,40 @@ stages:
   #       microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
   #       performTests: false
 
-  - stage: terraform
-    jobs:
-    - template: /azure/templates/terraform-s3.yml
-      parameters:
-        awsSecret: $(aws-secret)
-        awsKey: $(aws-key)
-        appName: ${{ parameters.appName }}-${{ parameters.stage }}
-        appLocation: ${{ parameters.appLocation }}
-        serviceConnectionName: 'AzureDevOps'
-        stageDeployment: ${{ parameters.stage }}
-        cloudService: 'Azure'
-        s3Bucket: bagofwords-${{parameters.stage}}-assets
+  # - stage: terraform
+  #   jobs:
+  #   - template: /azure/templates/terraform-s3.yml
+  #     parameters:
+  #       awsSecret: $(aws-secret)
+  #       awsKey: $(aws-key)
+  #       appName: ${{ parameters.appName }}-${{ parameters.stage }}
+  #       appLocation: ${{ parameters.appLocation }}
+  #       serviceConnectionName: 'AzureDevOps'
+  #       stageDeployment: ${{ parameters.stage }}
+  #       cloudService: 'Azure'
+  #       s3Bucket: bagofwords-${{parameters.stage}}-assets
   
-  - stage: dev
-    condition: succeededOrFailed()
+  # - stage: dev
+  #   condition: succeededOrFailed()
+  #   jobs:
+  #   - template: /azure/templates/deploy-using-tf-kv.yml
+  #     parameters:
+  #       stageDeployment: ${{parameters.stage}}
+  #       performTests: false
+  #       customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
+  #       appName: ${{ parameters.appName }}
+
+  - stage: Dev
     jobs:
-    - template: /azure/templates/deploy-using-tf-kv.yml
-      parameters:
-        stageDeployment: ${{parameters.stage}}
-        performTests: false
-        customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
-        appName: ${{ parameters.appName }}
+      - job: 'Terraform'
+        steps:
+          - template: azure/templates/jobs/terraform.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: ${{ parameters.stage }}
+              cloudService: 'Azure'
+              s3Bucket: bagofwords-${{parameters.stage}}-assets

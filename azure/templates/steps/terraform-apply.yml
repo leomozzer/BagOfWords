@@ -1,4 +1,8 @@
 parameters:
+  - name: awsSecret
+  - name: awsKey
+  - name: appName
+  - name: appLocation
   - name: cloudService
     default: "AWS"
     type: string
@@ -37,6 +41,7 @@ steps:
       environmentServiceName: 'AzureDevOps'
       resourceAddress: 'azurerm_resource_group.rg_app'
       resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.resourceGroup }}
+      commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       allowTelemetryCollection: true
   
   - task: TerraformCLI@0

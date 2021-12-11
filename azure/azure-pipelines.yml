@@ -92,6 +92,7 @@ stages:
               awsKey: $(aws-key)
               appName: ${{ parameters.appName }}-${{ parameters.stage }}
               appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
               storageName: bagofwords-${{ parameters.stage }}-assets
               resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg

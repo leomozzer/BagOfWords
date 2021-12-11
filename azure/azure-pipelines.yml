@@ -88,6 +88,10 @@ stages:
         steps:
           - template: /azure/templates/steps/terraform-apply.yml
             parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appLocation: ${{ parameters.appLocation }}
               stageDeployment: ${{ parameters.stage }}
               storageName: bagofwords-${{ parameters.stage }}-assets
               resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg

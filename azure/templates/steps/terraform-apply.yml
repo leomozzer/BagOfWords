@@ -49,7 +49,7 @@ steps:
     displayName: 'Terraform plan'
     inputs:
       command: 'plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-main'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
       allowTelemetryCollection: true
       commandOptions: -out=${{ parameters.stageDeployment }}.plan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
       environmentServiceName: ${{parameters.serviceConnectionName}}

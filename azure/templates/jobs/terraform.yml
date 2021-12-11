@@ -8,8 +8,8 @@ parameters:
   - name: stageDeployment
   - name: s3Bucket
 
-pool:
-    vmImage: ubuntu-latest
+# pool:
+#     vmImage: ubuntu-latest
 steps:
   - task: CmdLine@2 
     inputs:

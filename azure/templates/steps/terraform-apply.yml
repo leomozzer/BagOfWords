@@ -36,6 +36,7 @@ steps:
     displayName: 'Install Terraform'
 
   - task: TerraformCLI@0
+    displayName: 'Import Resource group'
     inputs:
       command: 'import'
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
@@ -59,6 +60,6 @@ steps:
       command: 'apply'
       allowTelemetryCollection: true
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-      commandOptions: -auto-approve -lock-timeout=10m ${{ parameters.stageDeployment }}.plan"
+      commandOptions: -auto-approve -lock-timeout=10m -input=false ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: ${{parameters.serviceConnectionName}}
     displayName: 'Terraform Apply'

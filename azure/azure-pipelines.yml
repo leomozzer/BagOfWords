@@ -96,7 +96,7 @@ stages:
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
               cloudService: 'Azure'
-              s3Bucket: bagofwords-${{parameters.stage}}-assets
+              s3Bucket: bagofwords-${{ parameters.stage }}-assets
   
   - stage: Prod
     jobs:

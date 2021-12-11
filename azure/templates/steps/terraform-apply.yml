@@ -4,6 +4,7 @@ parameters:
     type: string
   - name: stageDeployment
   - name: storageName
+  - name: resourceGroup
 
 steps:
 
@@ -28,6 +29,15 @@ steps:
     inputs:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
+
+  - task: TerraformCLI@0
+    inputs:
+      command: 'import'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+      environmentServiceName: 'AzureDevOps'
+      resourceAddress: 'azurerm_resource_group.rg_app'
+      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.resourceGroup }}
+      allowTelemetryCollection: true
   
   - task: TerraformCLI@0
     inputs:

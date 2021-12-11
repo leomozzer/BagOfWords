@@ -10,7 +10,7 @@ steps:
 # Check ${{ parameters.cloudService }}. Default is AWS
 #To use the AWS it's also needed a service connection
   - task: S3Download@1
-    condition: and(eq(${{ parameters.cloudService }}, 'AWS'), true)
+    condition: eq(variables.cloudService, 'AWS')
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'

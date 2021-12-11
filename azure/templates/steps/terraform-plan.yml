@@ -68,7 +68,7 @@ steps:
 #az command to set up the storage account
   - task: AzureCLI@2
     displayName: 'Create storage account'
-    condition: and(eq(${{ parameters.cloudService }}, 'Azure'), true)
+    condition: eq(variables.cloudService, 'Azure')
     inputs:
       azureSubscription: 'AzureDevOps'
       scriptType: 'bash'
@@ -79,7 +79,7 @@ steps:
 
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
-    condition: and(eq(${{ parameters.cloudService }}, 'Azure'), true)
+    condition: eq(variables.cloudService, 'Azure')
     inputs:
       azureSubscription: 'AzureDevOps'
       scriptType: bash

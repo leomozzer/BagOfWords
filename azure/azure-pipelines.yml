@@ -68,7 +68,7 @@ stages:
   #       customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
   #       appName: ${{ parameters.appName }}
 
-  - stage: Dev
+  - stage: dev
     jobs:
       - job: 'TerraformPlan'
         steps:
@@ -76,16 +76,33 @@ stages:
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appName: ${{ parameters.appName }}-$(Release.EnvironmentName)
               appLocation: ${{ parameters.appLocation }}
               serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
+              stageDeployment: $(Release.EnvironmentName)
               cloudService: 'Azure'
-              s3Bucket: bagofwords-${{parameters.stage}}-assets
+              s3Bucket: bagofwords-$(Release.EnvironmentName)-assets
 
       - job: 'TerraformApply'
+        dependsOn: TerraformPlan
+        condition: succeeded()
         steps:
           - template: /azure/templates/steps/terraform-apply.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-$(Release.EnvironmentName)
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: $(Release.EnvironmentName)
+              cloudService: 'Azure'
+              s3Bucket: bagofwords-$(Release.EnvironmentName)-assets
+  
+  - stage: Prod
+    jobs:
+      - job: 'TerraformPlan'
+        steps:
+          - template: /azure/templates/steps/terraform-plan.yml
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)

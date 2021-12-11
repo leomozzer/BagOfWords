@@ -72,7 +72,7 @@ stages:
     jobs:
       - job: 'Terraform'
         steps:
-          - template: azure/templates/jobs/terraform.yml
+          - template: /azure/templates/jobs/terraform.yml
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)

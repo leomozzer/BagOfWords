@@ -90,6 +90,7 @@ stages:
             parameters:
               stageDeployment: ${{ parameters.stage }}
               storageName: bagofwords-${{ parameters.stage }}-assets
+              resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg
   
   - stage: Prod
     jobs:

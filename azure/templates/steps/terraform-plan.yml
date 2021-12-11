@@ -55,7 +55,7 @@ steps:
 #To use the AWS it's also needed a service connection
   - task: S3Upload@1
     displayName: 'Upload to S3'
-    condition: and(eq(${{parameters.cloudService}}, 'AWS'), true)
+    condition: and(eq(${{ parameters.cloudService }}, 'AWS'), true)
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
@@ -68,7 +68,7 @@ steps:
 #az command to set up the storage account
   - task: AzureCLI@2
     displayName: 'Create storage account'
-    condition: eq(${{parameters.cloudService}}, "Azure")
+    condition: and(eq(${{ parameters.cloudService }}, 'Azure'), true)
     inputs:
       azureSubscription: 'AzureDevOps'
       scriptType: 'bash'
@@ -79,7 +79,7 @@ steps:
 
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
-    condition: eq(${{parameters.cloudService}}, "Azure") 
+    condition: and(eq(${{ parameters.cloudService }}, 'Azure'), true)
     inputs:
       azureSubscription: 'AzureDevOps'
       scriptType: bash

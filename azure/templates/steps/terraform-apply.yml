@@ -6,14 +6,14 @@ parameters:
   - name: cloudService
   - name: serviceConnectionName
   - name: stageDeployment
-  - name: s3Bucket
+  - name: storageName
 
 steps:
   - task: S3Download@1
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
-      bucketName: '${{ parameters.s3Bucket }}'
+      bucketName: '${{ parameters.storageName }}'
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: '$(System.DefaultWorkingDirectory)'

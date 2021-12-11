@@ -8,7 +8,7 @@ parameters:
     type: string
   - name: serviceConnectionName
   - name: stageDeployment
-  - name: storageArtifactsName
+  - name: storageName
 
 steps:
   - task: CmdLine@2 
@@ -59,7 +59,7 @@ steps:
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
-      bucketName: '${{ parameters.storageArtifactsName }}'
+      bucketName: '${{ parameters.storageName }}'
       sourceFolder: '$(System.DefaultWorkingDirectory)'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: 'plan'
@@ -74,8 +74,8 @@ steps:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.storageArtifactsName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
-        az storage container create --name plans --account-name ${{ parameters.storageArtifactsName }}
+        az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.storageName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
+        az storage container create --name plans --account-name ${{ parameters.storageName }}
 
   - task: AzureCLI@2
     displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage
@@ -89,4 +89,4 @@ steps:
           --container-name plans \
           --file terraform-main-${{ parameters.stageDeployment }}.tar \
           --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.tar \
-          --account-name "${{ parameters.storageArtifactsName }}"
+          --account-name "${{ parameters.storageName }}"

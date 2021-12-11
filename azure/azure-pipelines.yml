@@ -81,7 +81,7 @@ stages:
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
               cloudService: 'Azure'
-              s3Bucket: bagofwords-${{ parameters.stage }}-assets
+              storageName: bagofwords-${{ parameters.stage }}-assets
 
       - job: 'TerraformApply'
         dependsOn: TerraformPlan
@@ -96,7 +96,7 @@ stages:
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
               cloudService: 'Azure'
-              s3Bucket: bagofwords-${{ parameters.stage }}-assets
+              storageName: bagofwords-${{ parameters.stage }}-assets
   
   - stage: Prod
     jobs:
@@ -111,4 +111,4 @@ stages:
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: "prod"
               cloudService: 'Azure'
-              s3Bucket: bagofwords-prod-assets
+              storageName: bagofwords-prod-assets

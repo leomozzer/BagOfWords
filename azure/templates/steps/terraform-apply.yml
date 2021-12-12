@@ -44,12 +44,13 @@ steps:
 
   - task: CmdLine@2
     displayName: 'Move state file'
+    continueOnError: true
     inputs:
       script: 'mv terraform.tfstate $(System.DefaultWorkingDirectory)/plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/state-${{ parameters.stageDeployment }}'
 
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-    condition: always()
+    # condition: always()
     inputs:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
@@ -97,32 +98,18 @@ steps:
   #     environmentServiceName: ${{parameters.serviceConnectionName}}
   
   - task: TerraformCLI@0
-    condition: always()
+    displayName: 'Terraform Apply'
+    # condition: always()
+    continueOnError: true
     inputs:
       command: 'apply'
       allowTelemetryCollection: true
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
       commandOptions: -auto-approve -lock-timeout=10m -input=false ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: ${{parameters.serviceConnectionName}}
-    displayName: 'Terraform Apply'
-
-  - task: CmdLine@2 
-    condition: always()
-    inputs:
-      script: 'ls'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-    displayName: 'List files'
-
-  # - task: ArchiveFiles@2 
-  #   displayName: 'Archive terraform-apply and plan-files .tar'
-  #   inputs:
-  #     includeRootFolder: false
-  #     rootFolderOrFile: $(System.DefaultWorkingDirectory)/plan
-  #     archiveType: tar
-  #     archiveFile: $(System.DefaultWorkingDirectory)/terraform-apply-${{ parameters.stageDeployment }}.tar
   
   - task: S3Upload@1
-    condition: always()
+    # condition: always()
     displayName: 'Upload to S3 state file'
     inputs:
       awsCredentials: 'AWS-Connection'

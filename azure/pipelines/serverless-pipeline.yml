@@ -42,7 +42,7 @@ stages:
         steps:
           - template: /azure/templates/steps/node-tests.yml
 
-      - job: 'Serverless deploy'
+      - job: 'ServerlessDeploy'
         steps:
           - template: /azure/templates/steps/serverless-node.yml
             parameters:

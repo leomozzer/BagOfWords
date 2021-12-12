@@ -55,7 +55,7 @@ resource "azurerm_key_vault" "keyvault" {
       "restore"
     ]
 
-    storage_permissions = ["Get", "List", "Update"]
+    storage_permissions = ["Get", "List", "Update", "Purge"]
   }
 }
 

@@ -1,0 +1,80 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - terraform-improvements
+  paths:
+    exclude: 
+    - README.md
+    - LICENSE
+    include:
+    - src
+    - terraform-main
+
+parameters:
+  - name: appName
+    default: "BagOfWords"
+    type: string
+  - name: appLocation
+    default: "East US"
+    type: string
+  - name: stage
+    default: "dev"
+    type: string
+
+pool:
+  vmImage: ubuntu-latest
+
+#You can use this one if you have created the KeyVault and Cognitive Services manually.
+variables:
+  - group: "BagOfWords var group"
+
+stages:
+  - stage: dev
+    jobs:
+      - job: 'TerraformPlan'
+        steps:
+          - template: /azure/templates/steps/terraform-plan.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: ${{ parameters.stage }}
+              storageName: bagofwords-${{ parameters.stage }}-assets
+
+      - job: 'TerraformApply'
+        dependsOn: TerraformPlan
+        condition: succeeded()
+        steps:
+          - template: /azure/templates/steps/terraform-apply.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-${{ parameters.stage }}
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: ${{ parameters.stage }}
+              storageName: bagofwords-${{ parameters.stage }}-assets
+              resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg
+  
+  - stage: Prod
+    jobs:
+      - job: 'TerraformPlan'
+        steps:
+          - template: /azure/templates/steps/terraform-plan.yml
+            parameters:
+              awsSecret: $(aws-secret)
+              awsKey: $(aws-key)
+              appName: ${{ parameters.appName }}-prod
+              appLocation: ${{ parameters.appLocation }}
+              serviceConnectionName: 'AzureDevOps'
+              stageDeployment: "prod"
+              storageName: bagofwords-prod-assets

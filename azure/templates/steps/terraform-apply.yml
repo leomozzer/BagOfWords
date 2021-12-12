@@ -128,7 +128,7 @@ steps:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: '${{ parameters.storageName }}'
-      sourceFolder: '$(System.DefaultWorkingDirectory)'
+      sourceFolder: '$(System.DefaultWorkingDirectory)/plan'
       globExpressions: 'terraform.tfstate'
       targetFolder: 'state-${{ parameters.stageDeployment }}'
       createBucket: true

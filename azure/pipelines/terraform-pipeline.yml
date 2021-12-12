@@ -37,9 +37,9 @@ variables:
 stages:
   - stage: dev
     jobs:
-      - job: 'TerraformPlan'
+      - job: 'Terraform'
         steps:
-          - template: /azure/templates/steps/terraform-plan.yml
+          - template: /azure/templates/steps/terraform.yml
             parameters:
               awsSecret: $(aws-secret)
               awsKey: $(aws-key)
@@ -48,21 +48,6 @@ stages:
               serviceConnectionName: 'AzureDevOps'
               stageDeployment: ${{ parameters.stage }}
               storageName: bagofwords-${{ parameters.stage }}-assets
-
-      - job: 'TerraformApply'
-        dependsOn: TerraformPlan
-        condition: succeeded()
-        steps:
-          - template: /azure/templates/steps/terraform-apply.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
-              storageName: bagofwords-${{ parameters.stage }}-assets
-              resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg
   
   - stage: Prod
     jobs:

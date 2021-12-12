@@ -8,7 +8,6 @@ trigger:
   branches:
     include:
     - main
-    - terraform-improvements
   paths:
     exclude: 
     - README.md
@@ -49,68 +48,25 @@ stages:
   #       microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
   #       performTests: false
 
-  # - stage: terraform
-  #   jobs:
-  #   - template: /azure/templates/terraform-s3.yml
-  #     parameters:
-  #       awsSecret: $(aws-secret)
-  #       awsKey: $(aws-key)
-  #       appName: ${{ parameters.appName }}-${{ parameters.stage }}
-  #       appLocation: ${{ parameters.appLocation }}
-  #       serviceConnectionName: 'AzureDevOps'
-  #       stageDeployment: ${{ parameters.stage }}
-  #       cloudService: 'Azure'
-  #       s3Bucket: bagofwords-${{parameters.stage}}-assets
+  - stage: terraform
+    jobs:
+    - template: /azure/templates/terraform-s3.yml
+      parameters:
+        awsSecret: $(aws-secret)
+        awsKey: $(aws-key)
+        appName: ${{ parameters.appName }}-${{ parameters.stage }}
+        appLocation: ${{ parameters.appLocation }}
+        serviceConnectionName: 'AzureDevOps'
+        stageDeployment: ${{ parameters.stage }}
+        cloudService: 'Azure'
+        s3Bucket: bagofwords-${{parameters.stage}}-assets
   
-  # - stage: dev
-  #   condition: succeededOrFailed()
-  #   jobs:
-  #   - template: /azure/templates/deploy-using-tf-kv.yml
-  #     parameters:
-  #       stageDeployment: ${{parameters.stage}}
-  #       performTests: false
-  #       customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
-  #       appName: ${{ parameters.appName }}
-
   - stage: dev
+    condition: succeededOrFailed()
     jobs:
-      - job: 'TerraformPlan'
-        steps:
-          - template: /azure/templates/steps/terraform-plan.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
-              storageName: bagofwords-${{ parameters.stage }}-assets
-
-      - job: 'TerraformApply'
-        dependsOn: TerraformPlan
-        condition: succeeded()
-        steps:
-          - template: /azure/templates/steps/terraform-apply.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
-              storageName: bagofwords-${{ parameters.stage }}-assets
-              resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg
-  
-  - stage: Prod
-    jobs:
-      - job: 'TerraformPlan'
-        steps:
-          - template: /azure/templates/steps/terraform-plan.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-prod
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: "prod"
-              storageName: bagofwords-prod-assets
+    - template: /azure/templates/deploy-using-tf-kv.yml
+      parameters:
+        stageDeployment: ${{parameters.stage}}
+        performTests: false
+        customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
+        appName: ${{ parameters.appName }}

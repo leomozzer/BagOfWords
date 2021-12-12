@@ -38,9 +38,9 @@ variables:
 stages:
   - stage: dev
     jobs:
-      - job: 'Tests'
-        steps:
-          - template: /azure/templates/steps/node-tests.yml
+      # - job: 'Tests'
+      #   steps:
+      #     - template: /azure/templates/steps/node-tests.yml
 
       - job: 'ServerlessDeploy'
         steps:

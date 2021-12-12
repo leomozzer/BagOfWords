@@ -42,7 +42,8 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
 
   - task: CmdLine@2
-    displayName: 'Extract files'
+    displayName: 'Extract state files'
+    continueOnError: true
     inputs:
       script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar'
       workingDirectory: '$(System.DefaultWorkingDirectory)/apply'

@@ -1,8 +1,4 @@
-jobs:
-- job: 'Tests'
-  pool: 
-    vmImage: ubuntu-latest
-  steps:
+steps:
   - task: NodeTool@0
     inputs:
       versionSpec: '12.x'
@@ -12,5 +8,5 @@ jobs:
       npm install -D
     displayName: 'npm install & devDependencies'
   - script: |
-      npm run test
+      npm run test -- --watchAll=false
     displayName: 'perform tests'

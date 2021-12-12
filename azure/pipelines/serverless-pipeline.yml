@@ -38,43 +38,15 @@ variables:
 stages:
   - stage: dev
     jobs:
-      - job: 'TerraformPlan'
+      - job: 'Tests'
         steps:
-          - template: /azure/templates/steps/terraform-plan.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
-              storageName: bagofwords-${{ parameters.stage }}-assets
+          - template: /azure/templates/steps/node-tests.yml
 
-      - job: 'TerraformApply'
-        dependsOn: TerraformPlan
-        condition: succeeded()
+      - job: 'Serverless deploy'
         steps:
-          - template: /azure/templates/steps/terraform-apply.yml
+          - template: /azure/templates/steps/serverless-node.yml
             parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-${{ parameters.stage }}
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: ${{ parameters.stage }}
-              storageName: bagofwords-${{ parameters.stage }}-assets
-              resourceGroup: ${{ parameters.appName }}-${{ parameters.stage }}-rg
-  
-  - stage: Prod
-    jobs:
-      - job: 'TerraformPlan'
-        steps:
-          - template: /azure/templates/steps/terraform-plan.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-prod
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: "prod"
-              storageName: bagofwords-prod-assets
+              stageDeployment: ${{parameters.stage}}
+              performTests: false
+              customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
+              appName: ${{ parameters.appName }}

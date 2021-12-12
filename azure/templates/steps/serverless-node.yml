@@ -1,0 +1,48 @@
+parameters:
+  - name: stageDeployment
+  - name: performTests
+    default: false
+    type: boolean
+  - name: customKeyVaultName
+  - name: appName
+
+steps:
+  - task: AzureKeyVault@2
+    inputs:
+      azureSubscription: 'AzureDevOps'
+      KeyVaultName: ${{ parameters.customKeyVaultName }}
+      SecretsFilter: '*'
+      RunAsPreJob: true
+    displayName: 'Get secrets from ${{ parameters.customKeyVaultName }}'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      rm -rf azure
+      rm -rf terraform-main
+      rm -rf .github
+      rm -rf __tests__
+    displayName: 'Remove files and folders'
+    
+  - task: CmdLine@2 
+    inputs:
+      script: 'mv serverless-copy.yml serverless.yml'
+    displayName: 'Rename serverless.yml file'
+
+  - script: |
+      npm install
+      npm install -g serverless
+      serverless plugin install -n serverless-offline
+    displayName: 'npm install packages & serverless'
+
+  - task: CmdLine@2
+    inputs:
+      script: "serverless config credentials -o --provider aws --key $(aws-key) --secret $(aws-secret)"
+    displayName: "Configure serverless with AWS credentials"
+
+  - task: CmdLine@2
+    inputs:
+      script: "serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY $(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY) --MICROSOFT_TRANSLATOR_LOCATION $(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-LOCATION)"
+    displayName: "Deploy ${{ parameters.stageDeployment }}"

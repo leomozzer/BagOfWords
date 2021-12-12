@@ -1,9 +1,0 @@
-parameters:
-  - name: stageDeployment
-  - name: awsSecret
-  - name: awsKey
-  - name: microsoftLocation
-  - name: microsoftSubscription
-  
-- script: 'serverless config credentials -o --provider aws --key ${{ parameters.awsKey }} --secret ${{ parameters.awsSecret }}'
-- script: 'serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY ${{ parameters.microsoftSubscription }} --MICROSOFT_TRANSLATOR_LOCATION ${{ parameters.microsoftLocation }}'

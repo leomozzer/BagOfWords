@@ -99,3 +99,27 @@ steps:
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: 'apply'
       createBucket: true
+
+#az command to set up the storage account
+  # - task: AzureCLI@2
+  #   displayName: 'Create storage account'
+  #   inputs:
+  #     azureSubscription: 'AzureDevOps'
+  #     scriptType: 'bash'
+  #     scriptLocation: 'inlineScript'
+  #     inlineScript: |
+  #       az storage account create --resource-group ${{ parameters.appName }}-rg --name ${{ parameters.storageName }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
+  #       az storage container create --name plans --account-name ${{ parameters.storageName }}
+
+  # - task: AzureCLI@2
+  #   displayName: Copy ${{ parameters.stageDeployment }} plan of TF-Live to Storage 
+  #   inputs:
+  #     azureSubscription: 'AzureDevOps'
+  #     scriptType: bash
+  #     scriptLocation: inlineScript
+  #     inlineScript: |
+  #       az storage blob upload \
+  #         --container-name plans \
+  #         --file terraform-main-${{ parameters.stageDeployment }}.tar \
+  #         --name $(Build.BuildNumber)-main-${{ parameters.stageDeployment }}.tar \
+  #         --account-name "${{ parameters.storageName }}"

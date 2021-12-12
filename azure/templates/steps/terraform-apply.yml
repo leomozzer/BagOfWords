@@ -15,7 +15,19 @@ steps:
 
 # Check ${{ parameters.cloudService }}. Default is AWS
 #To use the AWS it's also needed a service connection
+
   - task: S3Download@1  
+    displayName: 'Download state file if exists'
+    inputs:
+      awsCredentials: 'AWS-Connection'
+      regionName: 'us-east-1'
+      bucketName: '${{ parameters.storageName }}'
+      sourceFolder: 'state-${{ parameters.stageDeployment }}'
+      globExpressions: 'terraform.tfstate'
+      targetFolder: '$(System.DefaultWorkingDirectory)'
+
+  - task: S3Download@1
+    condition: always()
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
@@ -23,14 +35,21 @@ steps:
       sourceFolder: 'plan'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: '$(System.DefaultWorkingDirectory)'
-
-  - task: CmdLine@2 
+    
+  - task: CmdLine@2
+    displayName: 'Extract files'
     inputs:
       script: 'tar -xvf terraform-main-${{ parameters.stageDeployment }}.tar'
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-    displayName: 'Extract files'
+
+  - task: CmdLine@2
+    displayName: 'Move state file'
+    inputs:
+      script: 'mv terraform.tfstate $(System.DefaultWorkingDirectory)/plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/state-${{ parameters.stageDeployment }}'
 
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+    condition: always()
     inputs:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
@@ -92,13 +111,13 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
     displayName: 'List files'
 
-  - task: ArchiveFiles@2 
-    displayName: 'Archive terraform-apply and plan-files .tar'
-    inputs:
-      includeRootFolder: false
-      rootFolderOrFile: $(System.DefaultWorkingDirectory)/plan
-      archiveType: tar
-      archiveFile: $(System.DefaultWorkingDirectory)/terraform-apply-${{ parameters.stageDeployment }}.tar
+  # - task: ArchiveFiles@2 
+  #   displayName: 'Archive terraform-apply and plan-files .tar'
+  #   inputs:
+  #     includeRootFolder: false
+  #     rootFolderOrFile: $(System.DefaultWorkingDirectory)/plan
+  #     archiveType: tar
+  #     archiveFile: $(System.DefaultWorkingDirectory)/terraform-apply-${{ parameters.stageDeployment }}.tar
   
   - task: S3Upload@1
     displayName: 'Upload to S3 state file'
@@ -107,6 +126,6 @@ steps:
       regionName: 'us-east-1'
       bucketName: '${{ parameters.storageName }}'
       sourceFolder: '$(System.DefaultWorkingDirectory)'
-      globExpressions: 'terraform-apply-${{ parameters.stageDeployment }}.tar'
-      targetFolder: 'apply'
+      globExpressions: 'terraform.tfstate'
+      targetFolder: 'state-${{ parameters.stageDeployment }}'
       createBucket: true

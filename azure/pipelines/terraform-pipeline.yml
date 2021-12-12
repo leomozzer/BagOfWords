@@ -49,16 +49,16 @@ stages:
               stageDeployment: ${{ parameters.stage }}
               storageName: bagofwords-${{ parameters.stage }}-assets
   
-  - stage: prod
-    jobs:
-      - job: 'Terraform'
-        steps:
-          - template: /azure/templates/steps/terraform.yml
-            parameters:
-              awsSecret: $(aws-secret)
-              awsKey: $(aws-key)
-              appName: ${{ parameters.appName }}-prod
-              appLocation: ${{ parameters.appLocation }}
-              serviceConnectionName: 'AzureDevOps'
-              stageDeployment: "prod"
-              storageName: bagofwords-prod-assets
+  # - stage: prod
+  #   jobs:
+  #     - job: 'Terraform'
+  #       steps:
+  #         - template: /azure/templates/steps/terraform.yml
+  #           parameters:
+  #             awsSecret: $(aws-secret)
+  #             awsKey: $(aws-key)
+  #             appName: ${{ parameters.appName }}-prod
+  #             appLocation: ${{ parameters.appLocation }}
+  #             serviceConnectionName: 'AzureDevOps'
+  #             stageDeployment: "prod"
+  #             storageName: bagofwords-prod-assets

@@ -27,6 +27,13 @@ steps:
       targetFolder: '$(System.DefaultWorkingDirectory)'
 
   - task: CmdLine@2
+    displayName: 'LS'
+    continueOnError: true
+    inputs:
+      script: 'ls'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - task: CmdLine@2
     displayName: 'Extract state files'
     continueOnError: true
     inputs:

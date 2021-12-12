@@ -35,27 +35,27 @@ steps:
       terraformVersion: 0.14.7
     displayName: 'Install Terraform'
 
-  - task: TerraformCLI@0
-    displayName: 'Import Resource group'
-    inputs:
-      command: 'import'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-      environmentServiceName: ${{parameters.serviceConnectionName}}
-      resourceAddress: 'azurerm_resource_group.rg_app'
-      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg
-      commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-      allowTelemetryCollection: true
+  # - task: TerraformCLI@0
+  #   displayName: 'Import Resource group'
+  #   inputs:
+  #     command: 'import'
+  #     workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+  #     environmentServiceName: ${{parameters.serviceConnectionName}}
+  #     resourceAddress: 'azurerm_resource_group.rg_app'
+  #     resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg
+  #     commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+  #     allowTelemetryCollection: true
 
-  - task: TerraformCLI@0
-    displayName: 'Import KeyVault'
-    inputs:
-      command: 'import'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-      environmentServiceName: ${{parameters.serviceConnectionName}}
-      resourceAddress: 'azurerm_key_vault.keyvault'
-      resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg/providers/Microsoft.KeyVault/vaults/${{ parameters.appName }}-kv
-      commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-      allowTelemetryCollection: true
+  # - task: TerraformCLI@0
+  #   displayName: 'Import KeyVault'
+  #   inputs:
+  #     command: 'import'
+  #     workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+  #     environmentServiceName: ${{parameters.serviceConnectionName}}
+  #     resourceAddress: 'azurerm_key_vault.keyvault'
+  #     resourceId: /subscriptions/$(SUBSCRIPTION-ID)/resourceGroups/${{ parameters.appName }}-rg/providers/Microsoft.KeyVault/vaults/${{ parameters.appName }}-kv
+  #     commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+  #     allowTelemetryCollection: true
 
   # - task: TerraformCLI@0
   #   displayName: 'Import Cognitive'
@@ -68,14 +68,14 @@ steps:
   #     commandOptions: -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
   #     allowTelemetryCollection: true
 
-  - task: TerraformCLI@0
-    displayName: 'Terraform plan'
-    inputs:
-      command: 'plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
-      allowTelemetryCollection: true
-      commandOptions: -out=${{ parameters.stageDeployment }}.plan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
-      environmentServiceName: ${{parameters.serviceConnectionName}}
+  # - task: TerraformCLI@0
+  #   displayName: 'Terraform plan'
+  #   inputs:
+  #     command: 'plan'
+  #     workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+  #     allowTelemetryCollection: true
+  #     commandOptions: -out=${{ parameters.stageDeployment }}.plan -input=false -var "app_name=${{ parameters.appName }}" -var "subscription_id=$(SUBSCRIPTION-ID)" -var "client_id=$(CLIENT-ID)" -var "client_secret=$(CLIENT-SECRET)" -var "tenant_id=$(TENANT-ID)" -var "location=${{ parameters.appLocation }}" -var "aws_secret=${{ parameters.awsSecret }}" -var "aws_key=${{ parameters.awsKey }}"
+  #     environmentServiceName: ${{parameters.serviceConnectionName}}
   
   - task: TerraformCLI@0
     inputs:
@@ -85,3 +85,22 @@ steps:
       commandOptions: -auto-approve -lock-timeout=10m -input=false ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: ${{parameters.serviceConnectionName}}
     displayName: 'Terraform Apply'
+
+  - task: ArchiveFiles@2 
+    displayName: 'Archive terraform-apply and plan-files .tar'
+    inputs:
+      includeRootFolder: false
+      rootFolderOrFile: $(System.DefaultWorkingDirectory)/plan
+      archiveType: tar
+      archiveFile: $(System.DefaultWorkingDirectory)/terraform-apply-${{ parameters.stageDeployment }}.tar
+  
+  - task: S3Upload@1
+    displayName: 'Upload to S3 state file'
+    inputs:
+      awsCredentials: 'AWS-Connection'
+      regionName: 'us-east-1'
+      bucketName: '${{ parameters.storageName }}'
+      sourceFolder: '$(System.DefaultWorkingDirectory)'
+      globExpressions: 'terraform-apply-${{ parameters.stageDeployment }}.tar'
+      targetFolder: 'apply'
+      createBucket: true

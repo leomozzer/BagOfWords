@@ -47,6 +47,7 @@ steps:
     inputs:
       script: 'mv terraform.tfstate $(System.DefaultWorkingDirectory)/plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/state-${{ parameters.stageDeployment }}'
+    failOnStderr: true
 
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
     condition: always()

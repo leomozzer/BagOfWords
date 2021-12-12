@@ -17,6 +17,7 @@ steps:
 
   - task: S3Download@1  
     displayName: 'Download state file if exists'
+    continueOnError: true
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'

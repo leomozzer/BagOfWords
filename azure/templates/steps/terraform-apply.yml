@@ -107,6 +107,7 @@ steps:
     displayName: 'Terraform Apply'
 
   - task: CmdLine@2 
+    condition: always()
     inputs:
       script: 'ls'
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
@@ -121,6 +122,7 @@ steps:
   #     archiveFile: $(System.DefaultWorkingDirectory)/terraform-apply-${{ parameters.stageDeployment }}.tar
   
   - task: S3Upload@1
+    condition: always()
     displayName: 'Upload to S3 state file'
     inputs:
       awsCredentials: 'AWS-Connection'

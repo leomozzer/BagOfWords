@@ -22,12 +22,11 @@ steps:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: '${{ parameters.storageName }}'
-      sourceFolder: 'state-${{ parameters.stageDeployment }}'
-      globExpressions: 'terraform.tfstate'
+      sourceFolder: 'apply'
+      globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: '$(System.DefaultWorkingDirectory)'
 
   - task: S3Download@1
-    condition: always()
     inputs:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
@@ -46,8 +45,10 @@ steps:
     displayName: 'Move state file'
     continueOnError: true
     inputs:
-      script: 'mv terraform.tfstate $(System.DefaultWorkingDirectory)/plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/state-${{ parameters.stageDeployment }}'
+      script: |
+        mv terraform.tfstate $(System.DefaultWorkingDirectory)/plan
+        mv terraform.tfstate.backup $(System.DefaultWorkingDirectory)/plan
+      workingDirectory: '$(System.DefaultWorkingDirectory)/apply'
 
   - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
     # condition: always()
@@ -107,6 +108,13 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
       commandOptions: -auto-approve -lock-timeout=10m -input=false ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: ${{parameters.serviceConnectionName}}
+
+  - task: CmdLine@2
+    displayName: 'Move state file'
+    continueOnError: true
+    inputs:
+      script: ls
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
 
   - task: ArchiveFiles@2 
     displayName: 'Archive terraform-main and plan-files .tar'

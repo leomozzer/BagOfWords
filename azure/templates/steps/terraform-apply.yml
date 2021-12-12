@@ -97,6 +97,7 @@ steps:
   #     environmentServiceName: ${{parameters.serviceConnectionName}}
   
   - task: TerraformCLI@0
+    condition: always()
     inputs:
       command: 'apply'
       allowTelemetryCollection: true

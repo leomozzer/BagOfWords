@@ -13,13 +13,19 @@ trigger:
     exclude: 
     - README.md
     - LICENSE
+    include:
+    - terraform-main
+
 
 parameters:
   - name: appName
-    default: "BagOfWords-stage"
+    default: "BagOfWords"
     type: string
   - name: appLocation
     default: "East US"
+    type: string
+  - name: stage
+    default: "dev"
     type: string
 
 pool:
@@ -45,19 +51,23 @@ stages:
 
   - stage: terraform
     jobs:
-    - template: /azure/templates/terraform.yml
+    - template: /azure/templates/terraform-s3.yml
       parameters:
         awsSecret: $(aws-secret)
         awsKey: $(aws-key)
-        appName: ${{ parameters.appName }}
+        appName: ${{ parameters.appName }}-${{ parameters.stage }}
         appLocation: ${{ parameters.appLocation }}
+        serviceConnectionName: 'AzureDevOps'
+        stageDeployment: ${{ parameters.stage }}
+        cloudService: 'Azure'
+        s3Bucket: bagofwords-${{parameters.stage}}-assets
   
   - stage: dev
     condition: succeededOrFailed()
     jobs:
     - template: /azure/templates/deploy-using-tf-kv.yml
       parameters:
-        stageDeployment: dev
+        stageDeployment: ${{parameters.stage}}
         performTests: false
-        customKeyVaultName: "${{ parameters.appName }}-kv" #app_name-kv
+        customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
         appName: ${{ parameters.appName }}

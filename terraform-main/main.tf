@@ -27,8 +27,8 @@ resource "azurerm_key_vault" "keyvault" {
   location                    = azurerm_resource_group.rg_app.location
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
-  # soft_delete_retention_days  = 0
-  purge_protection_enabled = false
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
 
   sku_name = "standard"
 
@@ -39,6 +39,10 @@ resource "azurerm_key_vault" "keyvault" {
     key_permissions = [
       "create",
       "get",
+      "purge",
+      "recover",
+      "restore",
+      "update"
     ]
 
     secret_permissions = [
@@ -47,10 +51,11 @@ resource "azurerm_key_vault" "keyvault" {
       "list",
       "delete",
       "purge",
-      "recover"
+      "recover",
+      "restore"
     ]
 
-    storage_permissions = ["Get", "List", "Update"]
+    storage_permissions = ["Get", "List", "Update", "Purge"]
   }
 }
 

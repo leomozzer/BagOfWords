@@ -4,8 +4,8 @@ provider "azurerm" {
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   features {
-    # key_vault {
-    #   purge_soft_delete_on_destroy = true
-    # }
+    key_vault {
+      purge_soft_delete_on_destroy = true
+    }
   }
 }

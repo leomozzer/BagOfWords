@@ -107,6 +107,14 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
       commandOptions: -auto-approve -lock-timeout=10m -input=false ${{ parameters.stageDeployment }}.plan"
       environmentServiceName: ${{parameters.serviceConnectionName}}
+
+  - task: ArchiveFiles@2 
+    displayName: 'Archive terraform-main and plan-files .tar'
+    inputs:
+      includeRootFolder: false
+      rootFolderOrFile: $(System.DefaultWorkingDirectory)/plan
+      archiveType: tar
+      archiveFile: $(System.DefaultWorkingDirectory)/terraform-main-${{ parameters.stageDeployment }}.tar
   
   - task: S3Upload@1
     # condition: always()
@@ -116,6 +124,6 @@ steps:
       regionName: 'us-east-1'
       bucketName: '${{ parameters.storageName }}'
       sourceFolder: '$(System.DefaultWorkingDirectory)/plan'
-      globExpressions: 'terraform.tfstate'
-      targetFolder: 'state-${{ parameters.stageDeployment }}'
+      globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
+      targetFolder: 'apply'
       createBucket: true

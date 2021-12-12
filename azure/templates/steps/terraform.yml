@@ -102,7 +102,7 @@ steps:
       awsCredentials: 'AWS-Connection'
       regionName: 'us-east-1'
       bucketName: '${{ parameters.storageName }}'
-      sourceFolder: '$(System.DefaultWorkingDirectory)/terraform-main'
+      sourceFolder: '$(System.DefaultWorkingDirectory)'
       globExpressions: 'terraform-main-${{ parameters.stageDeployment }}.tar'
       targetFolder: 'apply'
       createBucket: true

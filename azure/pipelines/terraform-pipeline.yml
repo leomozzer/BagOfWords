@@ -16,7 +16,6 @@ trigger:
     include:
     - terraform-main
 
-
 parameters:
   - name: appName
     default: "BagOfWords"
@@ -36,42 +35,6 @@ variables:
   - group: "BagOfWords var group"
 
 stages:
-# You can use this one if you have created the KeyVault and Cognitive Services manually.
-  # - stage: dev
-  #   condition: succeededOrFailed()
-  #   jobs:
-  #   - template: /azure/templates/deploy.yml
-  #     parameters:
-  #       stageDeployment: dev
-  #       awsSecret: $(aws-secret)
-  #       awsKey: $(aws-key)  
-  #       microsoftLocation: $(MICROSOFT-TRANSLATOR-LOCATION)
-  #       microsoftSubscription: $(MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)
-  #       performTests: false
-
-  # - stage: terraform
-  #   jobs:
-  #   - template: /azure/templates/terraform-s3.yml
-  #     parameters:
-  #       awsSecret: $(aws-secret)
-  #       awsKey: $(aws-key)
-  #       appName: ${{ parameters.appName }}-${{ parameters.stage }}
-  #       appLocation: ${{ parameters.appLocation }}
-  #       serviceConnectionName: 'AzureDevOps'
-  #       stageDeployment: ${{ parameters.stage }}
-  #       cloudService: 'Azure'
-  #       s3Bucket: bagofwords-${{parameters.stage}}-assets
-  
-  # - stage: dev
-  #   condition: succeededOrFailed()
-  #   jobs:
-  #   - template: /azure/templates/deploy-using-tf-kv.yml
-  #     parameters:
-  #       stageDeployment: ${{parameters.stage}}
-  #       performTests: false
-  #       customKeyVaultName: "${{ parameters.appName }}-${{ parameters.stage }}-kv" #app_name-kv
-  #       appName: ${{ parameters.appName }}
-
   - stage: dev
     jobs:
       - job: 'TerraformPlan'

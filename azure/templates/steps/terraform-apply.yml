@@ -86,6 +86,12 @@ steps:
       environmentServiceName: ${{parameters.serviceConnectionName}}
     displayName: 'Terraform Apply'
 
+  - task: CmdLine@2 
+    inputs:
+      script: 'ls'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/plan'
+    displayName: 'List files'
+
   - task: ArchiveFiles@2 
     displayName: 'Archive terraform-apply and plan-files .tar'
     inputs:

@@ -65,5 +65,5 @@ jobs:
 
   - task: CmdLine@2
     inputs:
-      script: "serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --param='MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY=$(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)' --param='MICROSOFT_TRANSLATOR_LOCATION $(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-LOCATION)'"
+      script: "serverless deploy --verbose --stage ${{ parameters.stageDeployment }} --param='MICROSOFT_TRANSLATOR_SUBSCRIPTION_KEY=$(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-SUBSCRIPTION-KEY)' --param='MICROSOFT_TRANSLATOR_LOCATION=$(${{ parameters.appName }}-${{ parameters.stageDeployment }}-MICROSOFT-TRANSLATOR-LOCATION)'"
     displayName: "Deploy ${{ parameters.stageDeployment }}"

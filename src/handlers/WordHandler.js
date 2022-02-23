@@ -26,9 +26,11 @@ module.exports = {
         return BagOfWords;
     },
     async HandleTranslatedWords(words, language = "en", output_language) {
+        console.log(words)
         let BagOfWords = [];
         for (const word of words) {
             let TranslatedWords = await MicrosoftTranslate(word, language, output_language)
+            console.log(TranslatedWords)
             if (TranslatedWords['error']) { return TranslatedWords['error'] }
             if (TranslatedWords['code'] === "400036") { return TranslatedWords['message'] }
             let GetDefinition
@@ -38,8 +40,9 @@ module.exports = {
                 }
                 catch (error) {
                     TranslatedWords = await MicrosoftTranslate(GenerateRandomWords(1)[0], language, output_language)
-                    GetDefinition = await WordDefinition(TranslatedWords[0]['to'], TranslatedWords[0]['text']);
+                    //GetDefinition = await WordDefinition(TranslatedWords[0]['to'], TranslatedWords[0]['text']);//Currently the api to translate the words isn't working
                 }
+                /*
                 if (GetDefinition['title']) { }
                 let FirstDefinition = GetDefinition[0];
                 let example = "";
@@ -48,7 +51,12 @@ module.exports = {
                     example = translate_wd['text']
                 }
                 FirstDefinition['translation'] = { 'word': word.charAt(0).toUpperCase() + word.slice(1), 'language': language, 'example': example }
-                BagOfWords.push(FirstDefinition)
+                */
+                let result = {
+                    'en': word
+                };
+                result[wd['to']] = wd['text']
+                BagOfWords.push(result)
             }
         }
         return BagOfWords;
